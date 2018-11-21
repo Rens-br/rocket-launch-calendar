@@ -15,7 +15,7 @@ export default class LaunchList extends Component {
 
   render() {
     this.setLaunches()
-    if (this.launches == null || this.launches == undefined) return null
+    if (this.launches == null || this.launches === undefined) return null
     else {
       console.log(this.launches)
       return (

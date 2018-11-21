@@ -1,10 +1,13 @@
 import React from 'react'
-import { Platform, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import PoCActions from 'App/Stores/PoC/Actions'
 import LaunchList from 'App/Components/launchList'
 import LaunchCard from '../../Components/LaunchCard'
+import BottomNavigationBar from '../../Components/RocketLaunchCalendar/BottomNavigationBar'
+import ApplicationStyles from '../../Theme/ApplicationStyles'
+import Colors from '../../Theme/Colors'
 
 class PoCScreen extends React.Component {
 
@@ -48,15 +51,22 @@ class PoCScreen extends React.Component {
   render()
   {
     return (
-      <View>
+      <View style={styles.mainScreen}>
         <Button onPress={this.fetchLaunches} title="Refresh" />
         <Button onPress={this.nextMonth} title={'current month: ' + this.months[this.state.currentMonth]} />
-        <LaunchList launches={this.props.Launches}/>
-        <LaunchCard/>
+        <BottomNavigationBar/>
       </View>
     )
 
 }}
+
+const styles = StyleSheet.create({
+  mainScreen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
 
 PoCScreen.propsTypes = {
   Launches: PropTypes.object,
