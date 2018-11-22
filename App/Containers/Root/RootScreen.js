@@ -7,6 +7,8 @@ import SplashScreen from 'App/Containers/SplashScreen/SplashScreen'
 import { connect } from 'react-redux'
 import StartupActions from 'App/Stores/Startup/Actions'
 import { createStackNavigator } from 'react-navigation'
+import BottomNavigationBar from '../../Components/RocketLaunchCalendar/BottomNavigationBar'
+import Colors from 'App/Theme/Colors'
 
 const AppNav = createStackNavigator(
   {
@@ -16,6 +18,7 @@ const AppNav = createStackNavigator(
   {
     initialRouteName: 'SplashScreen',
     headerMode: 'none',
+    cardStyle: { backgroundColor: Colors.background },
   }
 )
 
@@ -34,6 +37,7 @@ class RootScreen extends Component {
             NavigationService.setTopLevelNavigator(navigatorRef)
           }}
         />
+        <BottomNavigationBar />
       </View>
     )
   }

@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import MainActions from 'App/Stores/Main/Actions'
-import BottomNavigationBar from '../../Components/RocketLaunchCalendar/BottomNavigationBar'
 
 class TestScreen extends React.Component {
 
@@ -22,7 +21,6 @@ class TestScreen extends React.Component {
       <View style={styles.mainScreen}>
         <Button onPress={this.setDate} title={'refresh'} />
         <Text>{this.props.currentDate}</Text>
-        <BottomNavigationBar/>
       </View>
     )
 
@@ -31,8 +29,6 @@ class TestScreen extends React.Component {
 const styles = StyleSheet.create({
   mainScreen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })
 
