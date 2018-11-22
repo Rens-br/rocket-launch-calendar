@@ -1,8 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, View, Button, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import MainActions from 'App/Stores/Main/Actions'
+import { Card, Title, Paragraph, Text } from 'react-native-paper'
+import getTheme from '../../native-base-theme/components'
+import platform from '../../native-base-theme/variables/platform'
 
 class TestScreen extends React.Component {
 
@@ -19,8 +22,13 @@ class TestScreen extends React.Component {
   {
     return (
       <View style={styles.mainScreen}>
-        <Button onPress={this.setDate} title={'refresh'} />
-        <Text>{this.props.currentDate}</Text>
+          <Card style={{ borderRadius: 8, width: '90%', alignSelf: 'center' }}>
+            <Card.Cover source={{ uri: 'https://picsum.photos/700' }}/>
+            <Card.Content>
+              <Title>Card title</Title>
+              <Paragraph>Card content</Paragraph>
+            </Card.Content>
+          </Card>
       </View>
     )
 
