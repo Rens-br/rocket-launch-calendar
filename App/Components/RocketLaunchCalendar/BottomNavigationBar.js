@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Text, View } from 'react-native'
+import { View } from 'react-native'
+import { Button, Text } from 'native-base'
 
 export default class BottomNavigationBar extends Component {
   render() {
@@ -13,12 +14,12 @@ export default class BottomNavigationBar extends Component {
           alignItems: 'center',
           position: 'absolute',
           bottom: 0,
-          flexDirection: 'horizontal',
+          flexDirection: 'row',
         }}
       >
-        <Button title="Refresh" />
-        <Button title="Refresh" />
-        <Button title="Refresh" />
+        <Button light>
+          <Text> Light </Text>
+        </Button>
       </View>
     )
   }
