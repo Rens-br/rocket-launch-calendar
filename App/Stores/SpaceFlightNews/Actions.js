@@ -2,7 +2,7 @@ import { createActions } from 'reduxsauce'
 
 const { Types, Creators } = createActions({
   fetchNews: null,
-  fetchNewsSuccess: ['news'],
+  fetchNewsSuccess: ['News'],
 })
 
 export const SpaceFlightNewsTypes = Types

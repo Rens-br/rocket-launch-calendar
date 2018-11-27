@@ -9,11 +9,13 @@ import StartupActions from 'App/Stores/Startup/Actions'
 import { createStackNavigator } from 'react-navigation'
 import BottomNavigationBar from '../../Components/RocketLaunchCalendar/BottomNavigationBar'
 import Colors from 'App/Theme/Colors'
+import WebViewScreen from 'App/Containers/RocketLaunchCalendar/WebViewScreen'
 
 const AppNav = createStackNavigator(
   {
     SplashScreen: SplashScreen,
     MainScreen: TestScreen,
+    WebViewScreen: WebViewScreen,
   },
   {
     initialRouteName: 'SplashScreen',

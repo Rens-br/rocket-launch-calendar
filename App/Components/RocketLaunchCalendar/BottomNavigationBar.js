@@ -3,8 +3,6 @@ import { Footer, FooterTab, Button, Icon, Text, StyleProvider } from 'native-bas
 import Colors from 'App/Theme/Colors'
 import { StyleSheet } from 'react-native'
 import NavigationService from 'App/Services/NavigationService'
-import getTheme from 'App/native-base-theme/components'
-import material from 'App/native-base-theme/variables/material'
 
 export default class BottomNavigationBar extends Component {
   state = {

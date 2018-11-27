@@ -1,14 +1,14 @@
 import { createReducer } from 'reduxsauce'
-import { PoCTypes } from './Actions'
-import { Map } from 'immutable'
+import { SpaceFlightNewsTypes } from './Actions'
+import { INITIAL_STATE } from './InitialState'
 
-const initialState = []
-export const fetchNewsSuccess = (state, { Launch }) => {
+export const fetchNewsSuccess = (state, { News }) => {
   return {
-    Launches: Launch
+    articles: News,
+    lastUpdate: new Date(),
   }
 }
 
-export const reducer = createReducer(initialState, {
-  [PoCTypes.FETCH_NEWS_SUCCESS]: fetchNewsSuccess,
+export const reducer = createReducer(INITIAL_STATE, {
+  [SpaceFlightNewsTypes.FETCH_NEWS_SUCCESS]: fetchNewsSuccess,
 })

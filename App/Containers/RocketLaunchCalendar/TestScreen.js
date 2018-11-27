@@ -1,38 +1,43 @@
 import React from 'react'
-import { StyleSheet, View, Button, Image } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import MainActions from 'App/Stores/Main/Actions'
-import { Card, Title, Paragraph, Text } from 'react-native-paper'
-import getTheme from '../../native-base-theme/components'
-import platform from '../../native-base-theme/variables/platform'
+import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
+import { Card, Title, Paragraph, Button } from 'react-native-paper'
+import Colors from 'App/Theme/Colors'
+import NavigationService from 'App/Services/NavigationService'
+import Snackbar from '../../Components/RocketLaunchCalendar/Snackbar'
 
 class TestScreen extends React.Component {
 
   componentDidMount() {
     this.setDate()
+
   }
 
   setDate = () => {
     this.props.setCurrentDate()
-    console.log(this.props.currentDate)
+    this.props.fetchNews()
+    console.log(this.props.articles)
   }
 
-  render()
-  {
+  render() {
     return (
       <View style={styles.mainScreen}>
-          <Card style={{ borderRadius: 8, width: '90%', alignSelf: 'center' }}>
-            <Card.Cover source={{ uri: 'https://picsum.photos/700' }}/>
-            <Card.Content>
-              <Title>Card title</Title>
-              <Paragraph>Card content</Paragraph>
-            </Card.Content>
-          </Card>
+        <Card onPress={ () => { NavigationService.navigate('WebViewScreen', { url: this.props.articles[0].url, title: this.props.articles[0].title, source: this.props.articles[0].news_site_long }) }} style={{ borderRadius: 8, width: '90%', alignSelf: 'center' }}>
+          <Card.Cover source={{ uri: this.props.articles[0].featured_image }}/>
+          <Card.Content>
+            <Title style={{ fontSize: 22, lineHeight: 24, marginTop: 10 }}>{this.props.articles[0].title}</Title>
+            <Paragraph style={{ color: Colors.disabledText }}>{this.props.articles[0].news_site_long}</Paragraph>
+          </Card.Content>
+        </Card>
+        <Snackbar/>
       </View>
     )
 
-  }}
+  }
+}
 
 const styles = StyleSheet.create({
   mainScreen: {
@@ -46,13 +51,15 @@ TestScreen.propsTypes = {
 
 const mapStateToProps = (state) => ({
   currentDate: state.main.currentDate,
+  articles: state.spaceFlightNews.articles,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentDate: () => dispatch(MainActions.setCurrentDate()),
+  fetchNews: () => dispatch(SpaceFlightNewsActions.fetchNews()),
 })
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TestScreen)
