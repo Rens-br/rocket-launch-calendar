@@ -7,7 +7,7 @@ import NavigationService from 'App/Services/NavigationService'
 export default class BottomNavigationBar extends Component {
   state = {
     buttons: [
-      { enabled: true, screenName: 'MainScreen' },
+      { enabled: true, screenName: 'NewsScreen' },
       { enabled: false, screenName: 'SplashScreen' },
       { enabled: false, screenName: 'MainScreen' },
     ],
@@ -20,7 +20,6 @@ export default class BottomNavigationBar extends Component {
       this.state.buttons[i].enabled = i === screen
     }
     NavigationService.navigateAndReset(this.state.buttons[screen].screenName)
-    console.log(this.state.buttons)
     this.forceUpdate()
   }
 
@@ -29,9 +28,9 @@ export default class BottomNavigationBar extends Component {
         <Footer>
           <FooterTab style={{ backgroundColor: Colors.background }}>
             <Button vertical onPress={() => this.changeScreen(0)}>
-              <Icon name="home" type="Feather"
+              <Icon name="file-text" type="Feather"
                     style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}/>
-              <Text style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}>Activity</Text>
+              <Text style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}>News</Text>
             </Button>
             <Button vertical onPress={() => this.changeScreen(1)}>
               <Icon name="calendar" type="Feather"

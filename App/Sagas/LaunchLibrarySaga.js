@@ -4,7 +4,6 @@ import { LaunchLibraryService } from 'App/Services/LaunchLibraryService'
 
 export function* fetchLibraryLaunch() {
   const Launch = yield call(LaunchLibraryService.fetchLaunch)
-  console.log(Launch)
   if (Launch) {
     yield put(LaunchLibraryActions.fetchLibraryLaunchSuccess(Launch))
   } else {

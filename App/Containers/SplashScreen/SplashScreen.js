@@ -3,7 +3,6 @@ import { Text, View, WebView, StyleSheet, Platform } from 'react-native'
 
 export default class SplashScreen extends React.Component {
   render() {
-    console.log('web')
     return (
       <View style={styles.container}>
         <WebView

@@ -1,5 +1,4 @@
 import { put } from 'redux-saga/effects'
-import PoCActions from 'App/Stores/PoC/Actions'
 import NavigationService from 'App/Services/NavigationService'
 
 /**
@@ -8,7 +7,6 @@ import NavigationService from 'App/Services/NavigationService'
 export function* startup() {
   // Dispatch a redux action using `put()`
   // @see https://redux-saga.js.org/docs/basics/DispatchingActions.html
-  yield put(PoCActions.fetchLaunch())
 
   // Add more operations you need to do at startup here
   // ...

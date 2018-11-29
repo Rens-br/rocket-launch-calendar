@@ -11,12 +11,10 @@ const LaunchLibraryApiClient = create({
 })
 
 function fetchLaunch() {
-  console.log('service')
   const url = 'launch/2018-11-01/2018-11-30'
   return LaunchLibraryApiClient.get(url.toString()).then((response) => {
-    console.log(response)
     if (response.ok) {
-      return response.data
+      return response.data.launches
     }
     return null
   })

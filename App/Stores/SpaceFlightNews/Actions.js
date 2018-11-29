@@ -1,7 +1,7 @@
 import { createActions } from 'reduxsauce'
 
 const { Types, Creators } = createActions({
-  fetchNews: null,
+  fetchNews: ['date'],
   fetchNewsSuccess: ['News'],
   saveNews: ['News', 'Date'],
 })

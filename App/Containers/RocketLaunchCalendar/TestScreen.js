@@ -23,17 +23,15 @@ class TestScreen extends React.Component {
     this.props.setCurrentDate()
     this.props.fetchNews()
     this.props.fetchSpacexLaunch()
-    console.log(this.props.articles)
     this.createCardList()
     this.props.fetchLibraryLaunch()
   }
 
   createCardList = () => {
-    for (let i = 0; i < this.props.spacexLaunches.length; i++){
-      this.cards.push({type: 'Launch', date: this.props.spacexLaunches[i].launch_date_unix , data: this.props.spacexLaunches[i]})
-    }
-    for (let i = 0; i < this.props.articles.length; i++){
-      this.cards.push({type: 'Article', date: this.props.articles[i].date_added, data: this.props.articles[i]})
+    if(this.props.articles == 'undefined') return
+      for (let i = 0; i < this.props.articles.length; i++) {
+        this.cards.push({ type: 'Article', date: this.props.articles[i].date_added, data: this.props.articles[i] })
+
     }
 
     this.cards.sort(function(a, b){return a.date - b.date})
@@ -76,6 +74,7 @@ const mapStateToProps = (state) => ({
   currentDate: state.main.currentDate,
   articles: state.spaceFlightNews.articles,
   spacexLaunches: state.spacex.launches,
+  libraryLaunches: state.launchLibrary.launches,
 })
 
 const mapDispatchToProps = (dispatch) => ({
