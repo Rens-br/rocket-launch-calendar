@@ -1,13 +1,13 @@
 import { put, call } from 'redux-saga/effects'
-import SpacexActions from 'App/Stores/SpaceX/Actions'
-import { SpacexService } from 'App/Services/SpacexService'
+import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
+import { LaunchLibraryService } from 'App/Services/LaunchLibraryService'
 
-export function* fetchSpacexLaunch() {
-  const Launch = yield call(SpacexService.fetchLaunch)
+export function* fetchLibraryLaunch() {
+  const Launch = yield call(LaunchLibraryService.fetchLaunch)
   console.log(Launch)
   if (Launch) {
-    yield put(SpacexActions.fetchSpacexLaunchSuccess(Launch))
+    yield put(LaunchLibraryActions.fetchLibraryLaunchSuccess(Launch))
   } else {
-    console.log('Error fetching spacex api')
+    console.log('Error fetching LaunchLibrary api')
   }
 }

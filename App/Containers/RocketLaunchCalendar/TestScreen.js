@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 import MainActions from 'App/Stores/Main/Actions'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import SpacexActions from 'App/Stores/SpaceX/Actions'
+import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
 import Colors from 'App/Theme/Colors'
 import NavigationService from 'App/Services/NavigationService'
@@ -24,11 +25,12 @@ class TestScreen extends React.Component {
     this.props.fetchSpacexLaunch()
     console.log(this.props.articles)
     this.createCardList()
+    this.props.fetchLibraryLaunch()
   }
 
   createCardList = () => {
-    for (let i = 0; i < this.props.launches.length; i++){
-      this.cards.push({type: 'Launch', date: this.props.launches[i].launch_date_unix , data: this.props.launches[i]})
+    for (let i = 0; i < this.props.spacexLaunches.length; i++){
+      this.cards.push({type: 'Launch', date: this.props.spacexLaunches[i].launch_date_unix , data: this.props.spacexLaunches[i]})
     }
     for (let i = 0; i < this.props.articles.length; i++){
       this.cards.push({type: 'Article', date: this.props.articles[i].date_added, data: this.props.articles[i]})
@@ -73,13 +75,14 @@ TestScreen.propsTypes = {
 const mapStateToProps = (state) => ({
   currentDate: state.main.currentDate,
   articles: state.spaceFlightNews.articles,
-  launches: state.spacex.launches,
+  spacexLaunches: state.spacex.launches,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentDate: () => dispatch(MainActions.setCurrentDate()),
   fetchNews: () => dispatch(SpaceFlightNewsActions.fetchNews()),
   fetchSpacexLaunch: () => dispatch(SpacexActions.fetchSpacexLaunch()),
+  fetchLibraryLaunch: () => dispatch(LaunchLibraryActions.fetchLibraryLaunch()),
 })
 
 export default connect(
