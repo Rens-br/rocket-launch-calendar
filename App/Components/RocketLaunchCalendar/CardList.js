@@ -5,23 +5,25 @@ import NavigationService from '../../Services/NavigationService'
 import Colors from '../../Theme/Colors'
 
 export default class CardList extends Component {
-  cards = this.props.cardData
 
-  setcards = () => {
-    this.cards = this.props.cardData
-    this.cards.sort(function(a, b) {
-      return a.date - b.date
-    })
-    console.log(this.cards)
+  state = {
+    isRefreshing: false,
+    cards: this.props.cardData,
+  }
+
+  setCards = () => {
+    this.state.cards = this.props.cardData
+
+    console.log(this.state.cards)
   }
 
   render() {
-    this.setcards()
-    if (this.cards == null || this.cards == undefined) return null
+    this.setCards()
+    if (this.state.cards == null || this.state.cards == undefined) return null
     else {
       return (
         <FlatList
-          data={this.cards}
+          data={this.state.cards}
           renderItem={({ item }) => {
             return (
               <Card onPress={() => {
@@ -39,6 +41,10 @@ export default class CardList extends Component {
               </Card>)
           }
           }
+          onRefresh={this.props.refresh}
+          refreshing={this.props.refreshing}
+          onEndReached={this.props.endReached}
+          onEndReachedThreshold={0.5}
         />
       )
     }
