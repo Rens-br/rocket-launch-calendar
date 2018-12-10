@@ -8,7 +8,7 @@ export default class BottomNavigationBar extends Component {
   state = {
     buttons: [
       { enabled: true, screenName: 'NewsScreen' },
-      { enabled: false, screenName: 'SplashScreen' },
+      { enabled: false, screenName: 'CalendarScreen' },
       { enabled: false, screenName: 'MainScreen' },
     ],
   }

@@ -11,6 +11,7 @@ import BottomNavigationBar from '../../Components/RocketLaunchCalendar/BottomNav
 import Colors from 'App/Theme/Colors'
 import WebViewScreen from 'App/Containers/RocketLaunchCalendar/WebViewScreen'
 import NewsScreen from 'App/Containers/RocketLaunchCalendar/NewsScreen'
+import CalendarScreen from 'App/Containers/RocketLaunchCalendar/CalendarScreen'
 
 const AppNav = createStackNavigator(
   {
@@ -18,6 +19,7 @@ const AppNav = createStackNavigator(
     MainScreen: TestScreen,
     WebViewScreen: WebViewScreen,
     NewsScreen: NewsScreen,
+    CalendarScreen: CalendarScreen,
   },
   {
     initialRouteName: 'SplashScreen',
