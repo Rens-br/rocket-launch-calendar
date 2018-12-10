@@ -20,8 +20,7 @@ class CalendarScreen extends React.Component {
   }
 
   increaseMonth = () => {
-    this.state.month = ((this.state.month + 1) % 12) + 1
-    console.log(new Date(2018, this.state.month, 0).getDate())
+    this.state.month = ((this.state.month + 1) % 12)
     this.forceUpdate()
   }
 
@@ -30,7 +29,7 @@ class CalendarScreen extends React.Component {
       return(
         <View>
           <Button onPress={this.increaseMonth}>Next Month</Button>
-          <Text>{new Date(2018, this.state.month, 0).getDate()}</Text>
+          <Text>{new Date(2018, this.state.month +1, 0).getDate()}</Text>
         </View>
       )
     }
