@@ -14,7 +14,9 @@ export default class Calendar extends Component {
               <View style={styles.dayHolder}>
                 <View style={styles.dateHolder}>
                   <Text style={styles.dayText}>{days[item.day]}</Text>
-                  <Text style={styles.dateText}>December 1st, 2018</Text>
+                  <Text style={styles.dateText}>
+                    {months[item.date.getMonth()]} {item.date.getDate()}, {item.date.getFullYear}
+                  </Text>
                 </View>
                 <View style={styles.launchDay}>
                   <Icon name="rocket" type="FontAwesome" style={styles.launchIcon} />
@@ -26,7 +28,9 @@ export default class Calendar extends Component {
               <View style={styles.dayHolder}>
                 <View style={styles.dateHolder}>
                   <Text style={styles.dayText}>{days[item.day]}</Text>
-                  <Text style={styles.dateText}>December 1st, 2018</Text>
+                  <Text style={styles.dateText}>
+                    {months[item.date.getMonth()]} {item.date.getDate()}, {item.date.getFullYear()}
+                  </Text>
                 </View>
                 <View style={styles.normalDay} />
               </View>
@@ -38,7 +42,21 @@ export default class Calendar extends Component {
   }
 }
 
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'Setember',
+  'October',
+  'November',
+  'December',
+]
 
 const styles = StyleSheet.create({
   dayHolder: {

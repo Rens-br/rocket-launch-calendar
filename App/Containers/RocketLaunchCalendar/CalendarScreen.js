@@ -66,18 +66,7 @@ class CalendarScreen extends React.Component {
           <View>
             <Button onPress={this.GetNextMonday}>Next week</Button>
             <View>
-              <Calendar
-                dates={[
-                  { day: 1, launchDay: false },
-                  { day: 2, launchDay: true },
-                  { day: 3, launchDay: false },
-                  { day: 4, launchDay: true },
-                  { day: 5, launchDay: false },
-                  { day: 6, launchDay: false },
-                  { day: 0, launchDay: false },
-                ]}
-                style={styles.calendar}
-              />
+              <Calendar dates={dates} style={styles.calendar} />
             </View>
           </View>
         )
