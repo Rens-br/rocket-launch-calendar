@@ -32,6 +32,16 @@ class CalendarScreen extends React.Component {
     }))
   }
 
+  GetPreviousMonday = () => {
+    this.setState((previousState) => ({
+      currentMonday: new Date(
+        previousState.currentMonday.getFullYear(),
+        previousState.currentMonday.getMonth(),
+        previousState.currentMonday.getDate() - 7
+      ),
+    }))
+  }
+
   GetCurrentMonday = () => {
     this.setState((previousState) => ({ currentMonday: null }))
     var date = new Date()
@@ -65,6 +75,7 @@ class CalendarScreen extends React.Component {
         return (
           <View>
             <Button onPress={this.GetNextMonday}>Next week</Button>
+            <Button onPress={this.GetPreviousMonday}>Previous week</Button>
             <View>
               <Calendar dates={dates} style={styles.calendar} />
             </View>

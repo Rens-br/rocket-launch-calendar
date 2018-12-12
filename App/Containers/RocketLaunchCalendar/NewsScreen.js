@@ -6,7 +6,6 @@ import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import CardList from 'App/Components/RocketLaunchCalendar/CardList'
 
 class NewsScreen extends React.Component {
-
   state = {
     cards: [],
     refreshing: false,
@@ -32,22 +31,35 @@ class NewsScreen extends React.Component {
 
   createCardList = () => {
     this.state.cards = []
-    if(this.props.articles == 'undefined') return
+    if (this.props.articles == 'undefined') return
     for (let i = 0; i < this.props.articles.length; i++){
-      this.state.cards.push({type: 'Article', date: this.props.articles[i].date_added, data: this.props.articles[i]})
+      this.state.cards.push({
+        type: 'Article',
+        date: this.props.articles[i].date_added,
+        data: this.props.articles[i],
+      })
     }
   }
 
   addCards = () => {
-    for (let i = 0; i < this.props.articles.length; i++){
-      this.state.cards.push({type: 'Article', date: this.props.articles[i].date_added, data: this.props.articles[i]})
+    for (let i = 0; i < this.props.articles.length; i++) {
+      this.state.cards.push({
+        type: 'Article',
+        date: this.props.articles[i].date_added,
+        data: this.props.articles[i],
+      })
     }
   }
 
   render() {
     return (
       <View style={styles.newsScreen}>
-        <CardList cardData={this.state.cards} refresh={this.getNews} refreshing={this.props.loading} endReached={this.addNews}/>
+        <CardList
+          cardData={this.state.cards}
+          refresh={this.getNews}
+          refreshing={this.props.loading}
+          endReached={this.addNews}
+        />
       </View>
     )
   }
@@ -75,5 +87,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(NewsScreen)
