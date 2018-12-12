@@ -7,5 +7,7 @@ export default {
   success: '#28a745',
   error: '#dc3545',
 
+  normalDay: '#E5E5E5',
+  launchDay: '#D32F2F',
   background: '#263238',
 }

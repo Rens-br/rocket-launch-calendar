@@ -10,6 +10,7 @@ import { Card, Title, Paragraph, Button } from 'react-native-paper'
 import Colors from 'App/Theme/Colors'
 import NavigationService from 'App/Services/NavigationService'
 import CardList from 'App/Components/RocketLaunchCalendar/CardList'
+import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
 
 class CalendarScreen extends React.Component {
   componentDidMount() {}
@@ -30,6 +31,9 @@ class CalendarScreen extends React.Component {
         <View>
           <Button onPress={this.increaseMonth}>Next Month</Button>
           <Text>{new Date(2018, this.state.month +1, 0).getDate()}</Text>
+          <View>
+            <Calendar dates={[true,false,false,true,false,true,true]} style={{alignItems: 'center'}}/>
+          </View>
         </View>
       )
     }
