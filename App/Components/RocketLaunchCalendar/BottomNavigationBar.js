@@ -25,25 +25,41 @@ export default class BottomNavigationBar extends Component {
 
   render() {
     return (
-        <Footer>
-          <FooterTab style={{ backgroundColor: Colors.background }}>
-            <Button vertical onPress={() => this.changeScreen(0)}>
-              <Icon name="file-text" type="Feather"
-                    style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}/>
-              <Text style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}>News</Text>
-            </Button>
-            <Button vertical onPress={() => this.changeScreen(1)}>
-              <Icon name="calendar" type="Feather"
-                    style={this.state.buttons[1].enabled ? styles.enabled : styles.disabled}/>
-              <Text style={this.state.buttons[1].enabled ? styles.enabled : styles.disabled}>Calendar</Text>
-            </Button>
-            <Button vertical onPress={() => this.changeScreen(2)}>
-              <Icon name="settings" type="Feather"
-                    style={this.state.buttons[2].enabled ? styles.enabled : styles.disabled}/>
-              <Text style={this.state.buttons[2].enabled ? styles.enabled : styles.disabled}>Settings</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
+      <Footer>
+        <FooterTab style={{ backgroundColor: Colors.background }}>
+          <Button vertical onPress={() => this.changeScreen(0)}>
+            <Icon
+              name="file-text"
+              type="Feather"
+              style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}
+            />
+            <Text style={this.state.buttons[0].enabled ? styles.enabled : styles.disabled}>
+              News
+            </Text>
+          </Button>
+          <Button vertical onPress={() => this.changeScreen(1)}>
+            <Icon
+              name="calendar"
+              type="Feather"
+              style={this.state.buttons[1].enabled ? styles.enabled : styles.disabled}
+            />
+
+            <Text style={this.state.buttons[1].enabled ? styles.enabled : styles.disabled}>
+              Calendar
+            </Text>
+          </Button>
+          <Button vertical onPress={() => this.changeScreen(2)}>
+            <Icon
+              name="settings"
+              type="Feather"
+              style={this.state.buttons[2].enabled ? styles.enabled : styles.disabled}
+            />
+            <Text style={this.state.buttons[2].enabled ? styles.enabled : styles.disabled}>
+              Settings
+            </Text>
+          </Button>
+        </FooterTab>
+      </Footer>
     )
   }
 }

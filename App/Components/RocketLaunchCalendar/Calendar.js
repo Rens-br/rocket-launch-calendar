@@ -9,11 +9,11 @@ export default class Calendar extends Component {
       <FlatList
         data={this.props.dates}
         renderItem={({ item }) => {
-          if (item === true) {
+          if (item.launchDay === true) {
             return (
               <View style={styles.dayHolder}>
                 <View style={styles.dateHolder}>
-                  <Text style={styles.dayText}>Monday</Text>
+                  <Text style={styles.dayText}>{days[item.day]}</Text>
                   <Text style={styles.dateText}>December 1st, 2018</Text>
                 </View>
                 <View style={styles.launchDay}>
@@ -25,7 +25,7 @@ export default class Calendar extends Component {
             return (
               <View style={styles.dayHolder}>
                 <View style={styles.dateHolder}>
-                  <Text style={styles.dayText}>Monday</Text>
+                  <Text style={styles.dayText}>{days[item.day]}</Text>
                   <Text style={styles.dateText}>December 1st, 2018</Text>
                 </View>
                 <View style={styles.normalDay} />
@@ -37,6 +37,8 @@ export default class Calendar extends Component {
     )
   }
 }
+
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 const styles = StyleSheet.create({
   dayHolder: {
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
   },
   normalDay: {
-    backgroundColor: Colors.normalDay,
+    backgroundColor: Colors.disabledText,
     width: 70,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,

@@ -6,43 +6,88 @@ import MainActions from 'App/Stores/Main/Actions'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import SpacexActions from 'App/Stores/SpaceX/Actions'
 import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
-import { Card, Title, Paragraph, Button } from 'react-native-paper'
-import Colors from 'App/Theme/Colors'
-import NavigationService from 'App/Services/NavigationService'
-import CardList from 'App/Components/RocketLaunchCalendar/CardList'
+import { Button } from 'react-native-paper'
 import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
 
 class CalendarScreen extends React.Component {
-  componentDidMount() {}
-
-  state = {
-    calendarType: 0,
-    month: 1,
+  constructor(props) {
+    super(props)
+    this.state = {
+      calendarType: 0,
+      currentMonday: null,
+    }
   }
 
-  increaseMonth = () => {
-    this.state.month = ((this.state.month + 1) % 12)
-    this.forceUpdate()
+  componentDidMount() {
+    this.GetCurrentMonday()
+  }
+
+  GetNextMonday = () => {
+    this.setState((previousState) => ({
+      currentMonday: new Date(
+        previousState.currentMonday.getFullYear(),
+        previousState.currentMonday.getMonth(),
+        previousState.currentMonday.getDate() + 7
+      ),
+    }))
+  }
+
+  GetCurrentMonday = () => {
+    this.setState((previousState) => ({ currentMonday: null }))
+    var date = new Date()
+    var day = date.getDate()
+    var weekday = date.getDay()
+    if (weekday === 0) date.setDate(day - 6)
+    else date.setDate(day - (weekday - 1))
+    this.setState((previousState) => ({ currentMonday: date }))
+    console.log(this.state)
   }
 
   CreateCalendar() {
-    if(this.state.calendarType === 0){
-      return(
-        <View>
-          <Button onPress={this.increaseMonth}>Next Month</Button>
-          <Text>{new Date(2018, this.state.month +1, 0).getDate()}</Text>
+    if (this.state.currentMonday === null) {
+      return <Text>Test</Text>
+    } else {
+      let dates = []
+      for (let i = 0; i < 7; i++) {
+        dates.push({
+          day: i,
+          launchDay: false,
+          date: new Date(
+            this.state.currentMonday.getFullYear(),
+            this.state.currentMonday.getMonth(),
+            this.state.currentMonday.getDate() + i
+          ),
+        })
+      }
+      console.log(dates)
+
+      if (this.state.calendarType === 0) {
+        return (
           <View>
-            <Calendar dates={[true,false,false,true,false,true,true]} style={{alignItems: 'center'}}/>
+            <Button onPress={this.GetNextMonday}>Next week</Button>
+            <View>
+              <Calendar
+                dates={[
+                  { day: 1, launchDay: false },
+                  { day: 2, launchDay: true },
+                  { day: 3, launchDay: false },
+                  { day: 4, launchDay: true },
+                  { day: 5, launchDay: false },
+                  { day: 6, launchDay: false },
+                  { day: 0, launchDay: false },
+                ]}
+                style={styles.calendar}
+              />
+            </View>
           </View>
-        </View>
-      )
-    }
-    else if(this.state.calendarType === 1){
-      return(
-        <View>
-          <Text>2</Text>
-        </View>
-      )
+        )
+      } else if (this.state.calendarType === 1) {
+        return (
+          <View>
+            <Text>2</Text>
+          </View>
+        )
+      }
     }
   }
 
@@ -51,7 +96,11 @@ class CalendarScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  calendar: {
+    alignItems: 'center',
+  },
+})
 
 CalendarScreen.propsTypes = {
   currentDate: PropTypes.object,
