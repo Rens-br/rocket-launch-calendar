@@ -1,7 +1,9 @@
 import { Map } from 'immutable'
 
 export const INITIAL_STATE = Map({
-  launches: [],
-  savedLaunches: [],
+  launches: {},
+  savedLaunches: {},
   lastUpdate: null,
+  loading: false,
+  error: '',
 })

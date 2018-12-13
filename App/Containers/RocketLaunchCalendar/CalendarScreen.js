@@ -15,6 +15,7 @@ class CalendarScreen extends React.Component {
     this.state = {
       calendarType: 0,
       currentMonday: null,
+      dates: [],
     }
   }
 
@@ -23,23 +24,45 @@ class CalendarScreen extends React.Component {
   }
 
   GetNextMonday = () => {
+    let nDate = new Date(
+      this.state.currentMonday.getFullYear(),
+      this.state.currentMonday.getMonth(),
+      this.state.currentMonday.getDate() + 7
+    )
+
     this.setState((previousState) => ({
-      currentMonday: new Date(
-        previousState.currentMonday.getFullYear(),
-        previousState.currentMonday.getMonth(),
-        previousState.currentMonday.getDate() + 7
-      ),
+      currentMonday: nDate,
+      dates: [],
     }))
+
+    if (
+      nDate < new Date(this.props.savedLibraryLaunches.start) ||
+      nDate > new Date(this.props.savedLibraryLaunches.end)
+    ) {
+      console.log(nDate)
+      this.GetWeeksLaunches(nDate)
+    }
   }
 
   GetPreviousMonday = () => {
+    let nDate = new Date(
+      this.state.currentMonday.getFullYear(),
+      this.state.currentMonday.getMonth(),
+      this.state.currentMonday.getDate() - 7
+    )
+
     this.setState((previousState) => ({
-      currentMonday: new Date(
-        previousState.currentMonday.getFullYear(),
-        previousState.currentMonday.getMonth(),
-        previousState.currentMonday.getDate() - 7
-      ),
+      currentMonday: nDate,
+      dates: [],
     }))
+
+    if (
+      nDate < new Date(this.props.savedLibraryLaunches.start) ||
+      nDate > new Date(this.props.savedLibraryLaunches.end)
+    ) {
+      console.log(nDate)
+      this.GetWeeksLaunches(nDate)
+    }
   }
 
   GetCurrentMonday = () => {
@@ -50,34 +73,83 @@ class CalendarScreen extends React.Component {
     if (weekday === 0) date.setDate(day - 6)
     else date.setDate(day - (weekday - 1))
     this.setState((previousState) => ({ currentMonday: date }))
-    console.log(this.state)
+    this.props.fetchLibraryLaunch(
+      date,
+      new Date(date.getFullYear(), date.getMonth(), date.getDate() + 35)
+    )
+  }
+
+  GetWeeksLaunches = (date) => {
+    this.props.fetchLibraryLaunch(
+      date,
+      new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6)
+    )
+  }
+
+  GetDates = () => {
+    let useSavedDates = false
+    if (
+      this.state.currentMonday >= new Date(this.props.savedLibraryLaunches.start) &&
+      this.state.currentMonday <= new Date(this.props.savedLibraryLaunches.end)
+    ) {
+      useSavedDates = true
+    }
+
+    if (this.props.savedLibraryLaunches === undefined) {
+      this.props.saveLibraryLaunches()
+      return null
+    }
+    const dates = []
+    for (let i = 0; i < 7; i++) {
+      let d = new Date(
+        this.state.currentMonday.getFullYear(),
+        this.state.currentMonday.getMonth(),
+        this.state.currentMonday.getDate() + i
+      )
+      let l = []
+      if (useSavedDates) {
+        for (let i = 0; i < this.props.savedLibraryLaunches.launches.length; i++) {
+          if (
+            new Date(this.props.savedLibraryLaunches.launches[i].date).toDateString() ===
+            d.toDateString()
+          ) {
+            l.push(this.props.savedLibraryLaunches.launches[i])
+          }
+        }
+      } else {
+        console.log(this.props.libraryLaunches.launches)
+        for (let j = 0; j < this.props.libraryLaunches.launches.length; j++) {
+          if (this.props.libraryLaunches.launches[j].date.toDateString() === d.toDateString()) {
+            l.push(this.props.libraryLaunches.launches[j])
+          }
+        }
+      }
+      let e = false
+      if (l.length !== 0) e = true
+      dates.push({
+        day: i,
+        launchDay: e,
+        date: d,
+      })
+    }
+    console.log(dates)
+    this.setState((previousState) => ({ dates: dates }))
   }
 
   CreateCalendar() {
-    if (this.state.currentMonday === null) {
-      return <Text>Test</Text>
+    if (this.state.currentMonday === null || this.props.libraryLoading) {
+      return <Text style={{ fontSize: 40, color: '#fafafa' }}>Loading</Text>
+    } else if (this.state.dates.length === 0) {
+      this.GetDates()
     } else {
-      let dates = []
-      for (let i = 0; i < 7; i++) {
-        dates.push({
-          day: i,
-          launchDay: false,
-          date: new Date(
-            this.state.currentMonday.getFullYear(),
-            this.state.currentMonday.getMonth(),
-            this.state.currentMonday.getDate() + i
-          ),
-        })
-      }
-      console.log(dates)
-
+      console.log(this.state)
       if (this.state.calendarType === 0) {
         return (
           <View>
             <Button onPress={this.GetNextMonday}>Next week</Button>
             <Button onPress={this.GetPreviousMonday}>Previous week</Button>
             <View>
-              <Calendar dates={dates} style={styles.calendar} />
+              <Calendar dates={this.state.dates} style={styles.calendar} />
             </View>
           </View>
         )
@@ -111,13 +183,16 @@ const mapStateToProps = (state) => ({
   articles: state.spaceFlightNews.articles,
   spacexLaunches: state.spacex.launches,
   libraryLaunches: state.launchLibrary.launches,
+  savedLibraryLaunches: state.launchLibrary.savedLaunches,
+  libraryLoading: state.launchLibrary.loading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentDate: () => dispatch(MainActions.setCurrentDate()),
   fetchNews: () => dispatch(SpaceFlightNewsActions.fetchNews()),
   fetchSpacexLaunch: () => dispatch(SpacexActions.fetchSpacexLaunch()),
-  fetchLibraryLaunch: () => dispatch(LaunchLibraryActions.fetchLibraryLaunch()),
+  fetchLibraryLaunch: (Start, End) => dispatch(LaunchLibraryActions.fetchLibraryLaunch(Start, End)),
+  saveLibraryLaunches: () => dispatch(LaunchLibraryActions.saveLibraryLaunches()),
 })
 
 export default connect(

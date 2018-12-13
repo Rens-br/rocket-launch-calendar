@@ -1,9 +1,11 @@
 import { createActions } from 'reduxsauce'
 
 const { Types, Creators } = createActions({
-  fetchLibraryLaunch: null,
+  fetchLibraryLaunch: ['Start', 'End'],
   fetchLibraryLaunchSuccess: ['Launch'],
-  saveLibraryLaunches: ['Launch', 'Date'],
+  saveLibraryLaunches: null,
+  fetchLibraryLaunchLoading: null,
+  fetchLibraryLaunchError: ['Error'],
 })
 
 export const LaunchLibraryTypes = Types
