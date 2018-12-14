@@ -39,8 +39,12 @@ class CalendarScreen extends React.Component {
       nDate < new Date(this.props.savedLibraryLaunches.start) ||
       nDate > new Date(this.props.savedLibraryLaunches.end)
     ) {
-      console.log(nDate)
-      this.GetWeeksLaunches(nDate)
+      if (
+        nDate < new Date(this.props.libraryLaunches.start) ||
+        nDate > new Date(this.props.libraryLaunches.end)
+      ) {
+        this.GetMonthLaunches(nDate)
+      }
     }
   }
 
@@ -60,8 +64,13 @@ class CalendarScreen extends React.Component {
       nDate < new Date(this.props.savedLibraryLaunches.start) ||
       nDate > new Date(this.props.savedLibraryLaunches.end)
     ) {
-      console.log(nDate)
-      this.GetWeeksLaunches(nDate)
+      if (
+        nDate < new Date(this.props.libraryLaunches.start) ||
+        nDate > new Date(this.props.libraryLaunches.end)
+      ) {
+        console.log(nDate)
+        this.GetMonthLaunches(nDate)
+      }
     }
   }
 
@@ -79,10 +88,10 @@ class CalendarScreen extends React.Component {
     )
   }
 
-  GetWeeksLaunches = (date) => {
+  GetMonthLaunches = (date) => {
     this.props.fetchLibraryLaunch(
       date,
-      new Date(date.getFullYear(), date.getMonth(), date.getDate() + 6)
+      new Date(date.getFullYear(), date.getMonth(), date.getDate() + 35)
     )
   }
 
