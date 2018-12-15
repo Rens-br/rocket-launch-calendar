@@ -9,6 +9,7 @@ import SpacexActions from 'App/Stores/SpaceX/Actions'
 import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
 import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
 import Colors from 'App/Theme/Colors'
+import { DatePicker } from 'App/Components/RocketLaunchCalendar/DatePicker'
 
 class CalendarScreen extends React.Component {
   constructor(props) {
@@ -103,6 +104,27 @@ class CalendarScreen extends React.Component {
     )
   }
 
+  SetCurrentMonday = (date) => {
+    this.setState((previousState) => ({
+      currentMonday: date,
+      dates: [],
+    }))
+
+    this.GetWeekNumber(date)
+
+    if (
+      date < new Date(this.props.savedLibraryLaunches.start) ||
+      date > new Date(this.props.savedLibraryLaunches.end)
+    ) {
+      if (
+        date < new Date(this.props.libraryLaunches.start) ||
+        date > new Date(this.props.libraryLaunches.end)
+      ) {
+        this.GetMonthLaunches(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 35))
+      }
+    }
+  }
+
   GetMonthLaunches = (date, size) => {
     this.props.fetchLibraryLaunch(
       date,
@@ -141,7 +163,6 @@ class CalendarScreen extends React.Component {
           }
         }
       } else {
-        console.log(this.props.libraryLaunches.launches)
         for (let j = 0; j < this.props.libraryLaunches.launches.length; j++) {
           if (this.props.libraryLaunches.launches[j].date.toDateString() === d.toDateString()) {
             l.push(this.props.libraryLaunches.launches[j])
@@ -192,12 +213,22 @@ class CalendarScreen extends React.Component {
       <View style={styles.mainView}>
         <View style={styles.header}>
           <View style={styles.iconBar}>
-            <TouchableOpacity onPress={this._onPressButton} style={styles.iconBarIconLeft}>
+            <TouchableOpacity onPress={this.RefreshDates} style={styles.iconBarIconLeft}>
               <Icon name="refresh-ccw" type="Feather" style={styles.iconBarIcon} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onPressButton} style={styles.iconBarIconRight}>
-              <Icon name="calendar" type="Feather" style={styles.iconBarIcon} />
-            </TouchableOpacity>
+            <DatePicker
+              defaultDate={this.state.currentMonday}
+              locale={'en'}
+              timeZoneOffsetInMinutes={undefined}
+              modalTransparent={true}
+              animationType={'fade'}
+              androidMode={'default'}
+              onDateChange={this.SetCurrentMonday}
+              icon={'calendar'}
+              iconType={'Feather'}
+              iconColor={Colors.text}
+              style={styles.iconBarIconRight}
+            />
           </View>
           <View style={styles.weekBox}>
             <TouchableOpacity onPress={this.GetPreviousMonday}>
