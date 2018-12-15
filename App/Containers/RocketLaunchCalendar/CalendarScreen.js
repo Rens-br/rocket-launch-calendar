@@ -1,26 +1,38 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
+import { Spinner, Icon, Button } from 'native-base'
 import MainActions from 'App/Stores/Main/Actions'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import SpacexActions from 'App/Stores/SpaceX/Actions'
 import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
-import { Button } from 'react-native-paper'
 import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
+import Colors from 'App/Theme/Colors'
 
 class CalendarScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       calendarType: 0,
-      currentMonday: null,
+      currentMonday: new Date(),
       dates: [],
+      weekNumber: 0,
     }
   }
 
   componentDidMount() {
     this.GetCurrentMonday()
+    this.GetWeekNumber(new Date())
+  }
+
+  GetWeekNumber = (week) => {
+    let d = new Date(Date.UTC(week.getFullYear(), week.getMonth(), week.getDate()))
+
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
+    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+    var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7)
+    this.setState((previousState) => ({ weekNumber: weekNo }))
   }
 
   GetNextMonday = () => {
@@ -35,6 +47,8 @@ class CalendarScreen extends React.Component {
       dates: [],
     }))
 
+    this.GetWeekNumber(nDate)
+
     if (
       nDate < new Date(this.props.savedLibraryLaunches.start) ||
       nDate > new Date(this.props.savedLibraryLaunches.end)
@@ -48,7 +62,7 @@ class CalendarScreen extends React.Component {
     }
   }
 
-  GetPreviousMonday = () => {
+  GetPreviousMonday = (week) => {
     let nDate = new Date(
       this.state.currentMonday.getFullYear(),
       this.state.currentMonday.getMonth(),
@@ -60,6 +74,8 @@ class CalendarScreen extends React.Component {
       dates: [],
     }))
 
+    this.GetWeekNumber(nDate)
+
     if (
       nDate < new Date(this.props.savedLibraryLaunches.start) ||
       nDate > new Date(this.props.savedLibraryLaunches.end)
@@ -68,8 +84,7 @@ class CalendarScreen extends React.Component {
         nDate < new Date(this.props.libraryLaunches.start) ||
         nDate > new Date(this.props.libraryLaunches.end)
       ) {
-        console.log(nDate)
-        this.GetMonthLaunches(nDate)
+        this.GetMonthLaunches(new Date(nDate.getFullYear(), nDate.getMonth(), nDate.getDate() - 35))
       }
     }
   }
@@ -88,7 +103,7 @@ class CalendarScreen extends React.Component {
     )
   }
 
-  GetMonthLaunches = (date) => {
+  GetMonthLaunches = (date, size) => {
     this.props.fetchLibraryLaunch(
       date,
       new Date(date.getFullYear(), date.getMonth(), date.getDate() + 35)
@@ -147,19 +162,19 @@ class CalendarScreen extends React.Component {
 
   CreateCalendar() {
     if (this.state.currentMonday === null || this.props.libraryLoading) {
-      return <Text style={{ fontSize: 40, color: '#fafafa' }}>Loading</Text>
+      return (
+        <View style={styles.loadingSpinner}>
+          <Spinner color={Colors.launchDay} />
+        </View>
+      )
     } else if (this.state.dates.length === 0) {
       this.GetDates()
     } else {
       console.log(this.state)
       if (this.state.calendarType === 0) {
         return (
-          <View>
-            <Button onPress={this.GetNextMonday}>Next week</Button>
-            <Button onPress={this.GetPreviousMonday}>Previous week</Button>
-            <View>
-              <Calendar dates={this.state.dates} style={styles.calendar} />
-            </View>
+          <View style={styles.mainView}>
+            <Calendar dates={this.state.dates} style={styles.calendar} />
           </View>
         )
       } else if (this.state.calendarType === 1) {
@@ -173,13 +188,105 @@ class CalendarScreen extends React.Component {
   }
 
   render() {
-    return <View style={styles.mainScreen}>{this.CreateCalendar()}</View>
+    return (
+      <View style={styles.mainView}>
+        <View style={styles.header}>
+          <View style={styles.iconBar}>
+            <TouchableOpacity onPress={this._onPressButton} style={styles.iconBarIconLeft}>
+              <Icon name="refresh-ccw" type="Feather" style={styles.iconBarIcon} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._onPressButton} style={styles.iconBarIconRight}>
+              <Icon name="calendar" type="Feather" style={styles.iconBarIcon} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.weekBox}>
+            <TouchableOpacity onPress={this.GetPreviousMonday}>
+              <Icon name="chevron-left" type="Feather" style={styles.weekBoxChevron} />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.weekBoxWeekText}>Week {this.state.weekNumber}</Text>
+              <Text style={styles.weekBoxDateText}>
+                {this.state.currentMonday.toDateString().substring(4, 10)}
+                {' - '}
+                {new Date(
+                  this.state.currentMonday.getFullYear(),
+                  this.state.currentMonday.getMonth(),
+                  this.state.currentMonday.getDate() + 6
+                )
+                  .toDateString()
+                  .substring(4, 10)}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={this.GetNextMonday}>
+              <Icon name="chevron-right" type="Feather" style={styles.weekBoxChevron} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider} />
+        </View>
+        {this.CreateCalendar()}
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
+  loadingSpinner: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  mainView: {
+    flex: 1,
+  },
   calendar: {
     alignItems: 'center',
+  },
+  header: { flex: 0.2 },
+  iconBar: {
+    flexDirection: 'row',
+    marginTop: '5%',
+    marginLeft: '5%',
+    marginRight: '5%',
+    flex: 0.3,
+  },
+  iconBarIconLeft: {
+    flex: 1,
+  },
+  iconBarIconRight: {
+    flex: 0,
+  },
+  iconBarIcon: {
+    color: Colors.text,
+  },
+  weekBox: {
+    flex: 0.6,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  weekBoxChevron: {
+    fontSize: 48,
+    color: Colors.text,
+    marginTop: 10,
+    marginRight: 5,
+    marginLeft: 5,
+  },
+  weekBoxWeekText: {
+    fontSize: 32,
+    color: Colors.text,
+    textAlign: 'center',
+  },
+  weekBoxDateText: {
+    fontSize: 14,
+    color: Colors.disabledText,
+    textAlign: 'center',
+    marginTop: -5,
+  },
+  divider: {
+    backgroundColor: Colors.disabledText,
+    flex: 0.02,
+    width: '80%',
+    alignSelf: 'center',
+    marginTop: 5,
   },
 })
 

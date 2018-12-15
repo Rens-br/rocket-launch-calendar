@@ -61,7 +61,7 @@ const months = [
 const styles = StyleSheet.create({
   dayHolder: {
     alignSelf: 'center',
-    marginTop: 5,
+    marginTop: 16,
     width: '90%',
     height: 70,
     backgroundColor: Colors.text,
