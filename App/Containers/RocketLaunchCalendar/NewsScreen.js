@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
@@ -7,10 +7,13 @@ import CardList from 'App/Components/RocketLaunchCalendar/CardList'
 import Colors from 'App/Theme/Colors'
 
 class NewsScreen extends React.Component {
-  state = {
-    cards: [],
-    refreshing: false,
-    currentPage: 1,
+  constructor(props) {
+    super(props)
+    this.state = {
+      cards: [],
+      refreshing: false,
+      currentPage: 1,
+    }
   }
 
   componentDidMount() {
@@ -18,28 +21,29 @@ class NewsScreen extends React.Component {
   }
 
   getNews = () => {
-    this.state.currentPage = 1
+    this.setState((previousState) => ({ currentPage: 1 }))
     this.props.fetchNews(this.state.currentPage)
     this.createCardList()
     console.log('fetch')
   }
 
   addNews = () => {
-    this.state.currentPage++
+    this.setState((previousState) => ({ currentPage: previousState.currentPage + 1 }))
     this.props.fetchNews(this.state.currentPage)
     this.addCards()
   }
 
   createCardList = () => {
-    this.state.cards = []
-    if (this.props.articles == 'undefined') return
-    for (let i = 0; i < this.props.articles.length; i++){
-      this.state.cards.push({
+    let c = []
+    if (this.props.articles === undefined) return
+    for (let i = 0; i < this.props.articles.length; i++) {
+      c.push({
         type: 'Article',
         date: this.props.articles[i].date_added,
         data: this.props.articles[i],
       })
     }
+    this.setState((previousState) => ({ cards: c }))
   }
 
   addCards = () => {

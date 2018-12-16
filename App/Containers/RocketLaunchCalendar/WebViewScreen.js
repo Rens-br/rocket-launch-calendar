@@ -15,7 +15,10 @@ export default class WebViewScreen extends React.Component {
     const { navigation } = this.props
     return (
       <View style={styles.container}>
-        <Header style={{ backgroundColor: Colors.background }} androidStatusBarColor={Colors.background}>
+        <Header
+          style={{ backgroundColor: Colors.background }}
+          androidStatusBarColor={Colors.background}
+        >
           <Left>
             <Button transparent>
               <Icon
@@ -27,20 +30,24 @@ export default class WebViewScreen extends React.Component {
             </Button>
           </Left>
           <Body>
-          <Title
-            onLongPress={() => {
-              this.setState({ snackbarVisible: true })
-              Clipboard.setString(navigation.getParam('url', 'www.google.com'))
-            }}>
-            {navigation.getParam('title', '')}
-          </Title>
-          <Subtitle
-            onLongPress={() => {
-              this.setState({ snackbarVisible: true })
-              Clipboard.setString(navigation.getParam('url', 'www.google.com'))
-            }}>{navigation.getParam('source', '')}</Subtitle>
+            <Title
+              onLongPress={() => {
+                this.setState({ snackbarVisible: true })
+                Clipboard.setString(navigation.getParam('url', 'www.google.com'))
+              }}
+            >
+              {navigation.getParam('title', '')}
+            </Title>
+            <Subtitle
+              onLongPress={() => {
+                this.setState({ snackbarVisible: true })
+                Clipboard.setString(navigation.getParam('url', 'www.google.com'))
+              }}
+            >
+              {navigation.getParam('source', '')}
+            </Subtitle>
           </Body>
-          <Right/>
+          <Right />
         </Header>
         <WebView
           style={styles.WebViewStyle}
@@ -68,6 +75,5 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 })
