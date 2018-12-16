@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
-import { Spinner, Icon, Button } from 'native-base'
+import { Spinner, Icon } from 'native-base'
 import MainActions from 'App/Stores/Main/Actions'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import SpacexActions from 'App/Stores/SpaceX/Actions'
@@ -10,6 +10,7 @@ import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
 import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
 import Colors from 'App/Theme/Colors'
 import { DatePicker } from 'App/Components/RocketLaunchCalendar/DatePicker'
+import NavigationService from 'App/Services/NavigationService'
 
 class CalendarScreen extends React.Component {
   constructor(props) {
@@ -175,10 +176,14 @@ class CalendarScreen extends React.Component {
         day: i,
         launchDay: e,
         date: d,
+        launches: l,
       })
     }
-    console.log(dates)
     this.setState((previousState) => ({ dates: dates }))
+  }
+
+  onPressItem(item) {
+    NavigationService.navigate('LaunchInfoScreen', { item })
   }
 
   CreateCalendar() {
@@ -194,8 +199,12 @@ class CalendarScreen extends React.Component {
       console.log(this.state)
       if (this.state.calendarType === 0) {
         return (
-          <View style={styles.mainView}>
-            <Calendar dates={this.state.dates} style={styles.calendar} />
+          <View style={styles.calendarView}>
+            <Calendar
+              dates={this.state.dates}
+              style={styles.calendar}
+              pressItem={this.onPressItem}
+            />
           </View>
         )
       } else if (this.state.calendarType === 1) {
@@ -264,9 +273,14 @@ const styles = StyleSheet.create({
   loadingSpinner: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: Colors.contentBackground,
   },
   mainView: {
     flex: 1,
+  },
+  calendarView: {
+    flex: 1,
+    backgroundColor: Colors.contentBackground,
   },
   calendar: {
     alignItems: 'center',

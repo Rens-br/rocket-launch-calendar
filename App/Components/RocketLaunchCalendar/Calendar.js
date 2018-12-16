@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, FlatList, View, StyleSheet } from 'react-native'
+import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
 import Colors from '../../Theme/Colors'
 import { Icon } from 'native-base'
 
@@ -11,17 +11,23 @@ export default class Calendar extends Component {
         renderItem={({ item }) => {
           if (item.launchDay === true) {
             return (
-              <View style={styles.dayHolder}>
-                <View style={styles.dateHolder}>
-                  <Text style={styles.dayText}>{days[item.day]}</Text>
-                  <Text style={styles.dateText}>
-                    {months[item.date.getMonth()]} {item.date.getDate()}, {item.date.getFullYear}
-                  </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.pressItem(item)
+                }}
+              >
+                <View style={styles.dayHolder}>
+                  <View style={styles.dateHolder}>
+                    <Text style={styles.dayText}>{days[item.day]}</Text>
+                    <Text style={styles.dateText}>
+                      {months[item.date.getMonth()]} {item.date.getDate()}, {item.date.getFullYear}
+                    </Text>
+                  </View>
+                  <View style={styles.launchDay}>
+                    <Icon name="rocket" type="FontAwesome" style={styles.launchIcon} />
+                  </View>
                 </View>
-                <View style={styles.launchDay}>
-                  <Icon name="rocket" type="FontAwesome" style={styles.launchIcon} />
-                </View>
-              </View>
+              </TouchableOpacity>
             )
           } else {
             return (
