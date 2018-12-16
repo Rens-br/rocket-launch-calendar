@@ -10,4 +10,5 @@ export default {
   normalDay: '#E5E5E5',
   launchDay: '#D32F2F',
   background: '#263238',
+  contentBackground: '#232C33',
 }

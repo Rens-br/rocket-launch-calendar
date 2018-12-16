@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import CardList from 'App/Components/RocketLaunchCalendar/CardList'
+import Colors from 'App/Theme/Colors'
 
 class NewsScreen extends React.Component {
   state = {
@@ -68,6 +69,7 @@ class NewsScreen extends React.Component {
 const styles = StyleSheet.create({
   newsScreen: {
     flex: 1,
+    backgroundColor: Colors.contentBackground,
   },
 })
 
