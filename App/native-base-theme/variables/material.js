@@ -1,6 +1,7 @@
 // @flow
 
 import color from "color";
+import Colors from 'App/Theme/Colors'
 
 import { Platform, Dimensions, PixelRatio } from "react-native";
 
@@ -30,7 +31,7 @@ export default {
 
   // Badge
   badgeBg: "#ED1727",
-  badgeColor: "#fff",
+  badgeColor: Colors.text,
   badgePadding: 0,
 
   // Button
@@ -87,7 +88,7 @@ export default {
   },
 
   // Card
-  cardDefaultBg: "#fff",
+  cardDefaultBg: Colors.text,
   cardBorderColor: "#ccc",
   cardBorderRadius: 2,
   cardItemPadding: platform === "ios" ? 10 : 12,
@@ -102,10 +103,10 @@ export default {
   CheckboxFontSize: 17,
   checkboxBgColor: "#039BE5",
   checkboxSize: 20,
-  checkboxTickColor: "#fff",
+  checkboxTickColor: Colors.text,
 
   // Color
-  brandPrimary: "#3F51B5",
+  brandPrimary: Colors.background,
   brandInfo: "#62B1F6",
   brandSuccess: "#5cb85c",
   brandDanger: "#d9534f",
@@ -114,7 +115,7 @@ export default {
   brandLight: "#f4f4f4",
 
   //Container
-  containerBgColor: "#fff",
+  containerBgColor: Colors.text,
 
   //Date Picker
   datePickerTextColor: "#000",
@@ -136,27 +137,27 @@ export default {
 
   // Footer
   footerHeight: 55,
-  footerDefaultBg: "#3F51B5",
+  footerDefaultBg: Colors.background,
   footerPaddingBottom: 0,
 
   // FooterTab
   tabBarTextColor: "#bfc6ea",
   tabBarTextSize: 11,
-  activeTab: "#fff",
+  activeTab: Colors.text,
   sTabBarActiveTextColor: "#007aff",
-  tabBarActiveTextColor: "#fff",
-  tabActiveBgColor: "#3F51B5",
+  tabBarActiveTextColor: Colors.text,
+  tabActiveBgColor: Colors.background,
 
   // Header
-  toolbarBtnColor: "#fff",
-  toolbarDefaultBg: "#3F51B5",
+  toolbarBtnColor: Colors.text,
+  toolbarDefaultBg: Colors.background,
   toolbarHeight: 56,
   toolbarSearchIconSize: 23,
-  toolbarInputColor: "#fff",
+  toolbarInputColor: Colors.text,
   searchBarHeight: platform === "ios" ? 30 : 40,
   searchBarInputHeight: platform === "ios" ? 40 : 50,
-  toolbarBtnTextColor: "#fff",
-  toolbarDefaultBorder: "#3F51B5",
+  toolbarBtnTextColor: Colors.text,
+  toolbarDefaultBorder: Colors.background,
   iosStatusbar: "light-content",
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
@@ -202,7 +203,7 @@ export default {
   listItemPadding: 12,
   listNoteColor: "#808080",
   listNoteSize: 13,
-  listItemSelected: "#3F51B5",
+  listItemSelected: Colors.background,
 
   // Progress Bar
   defaultProgressColor: "#E4202D",
@@ -210,30 +211,30 @@ export default {
 
   // Radio Button
   radioBtnSize: 23,
-  radioSelectedColorAndroid: "#3F51B5",
+  radioSelectedColorAndroid: Colors.background,
   radioBtnLineHeight: 24,
   get radioColor() {
     return this.brandPrimary;
   },
 
   // Segment
-  segmentBackgroundColor: "#3F51B5",
-  segmentActiveBackgroundColor: "#fff",
-  segmentTextColor: "#fff",
-  segmentActiveTextColor: "#3F51B5",
-  segmentBorderColor: "#fff",
-  segmentBorderColorMain: "#3F51B5",
+  segmentBackgroundColor: Colors.background,
+  segmentActiveBackgroundColor: Colors.text,
+  segmentTextColor: Colors.text,
+  segmentActiveTextColor: Colors.background,
+  segmentBorderColor: Colors.text,
+  segmentBorderColorMain: Colors.background,
 
   // Spinner
   defaultSpinnerColor: "#45D56E",
   inverseSpinnerColor: "#1A191B",
 
   // Tab
-  tabDefaultBg: "#650b0b",
-  topTabBarTextColor: "#b3c7f9",
-  topTabBarActiveTextColor: "#fff",
-  topTabBarBorderColor: "#fff",
-  topTabBarActiveBorderColor: "#fff",
+  tabDefaultBg: Colors.background,
+  topTabBarTextColor: Colors.disabledText,
+  topTabBarActiveTextColor: Colors.text,
+  topTabBarBorderColor: Colors.text,
+  topTabBarActiveBorderColor: Colors.text,
 
   // Tabs
   tabBgColor: "#F8F8F8",
@@ -241,7 +242,7 @@ export default {
 
   // Text
   textColor: "#000",
-  inverseTextColor: "#fff",
+  inverseTextColor: Colors.text,
   noteFontSize: 14,
   get defaultTextColor() {
     return this.textColor;
@@ -251,8 +252,8 @@ export default {
   titleFontfamily: "Roboto",
   titleFontSize: 19,
   subTitleFontSize: 14,
-  subtitleColor: "#FFF",
-  titleFontColor: "#FFF",
+  subtitleColor: Colors.text,
+  titleFontColor: Colors.text,
 
   // Other
   borderRadiusBase: 2,
