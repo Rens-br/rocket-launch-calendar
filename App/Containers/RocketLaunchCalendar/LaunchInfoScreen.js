@@ -5,18 +5,26 @@ import { connect } from 'react-redux'
 import Colors from 'App/Theme/Colors'
 import getTheme from 'App/native-base-theme/components'
 import material from 'App/native-base-theme/variables/material'
+import NavigationService from 'App/Services/NavigationService'
 
 class TestScreen extends React.Component {
   componentDidMount() {}
 
+  ExitScreen = () => {
+    NavigationService.navigateAndReset('CalendarScreen')
+  }
+
   render() {
     console.log(this.props.navigation.state.params)
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <View style={styles.header}>
           <View style={styles.iconBar}>
-            <TouchableOpacity onPress={this.RefreshDates} style={styles.iconBarIconLeft}>
+            <TouchableOpacity onPress={this.ExitScreen} style={styles.iconBarIconLeft}>
               <Icon name="arrow-left" type="Feather" style={styles.iconBarIcon} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.RefreshDates} style={styles.iconBarIconRight}>
+              <Icon name="bell" type="Feather" style={styles.iconBarIcon} />
             </TouchableOpacity>
           </View>
           <View style={styles.weekBox}>
@@ -25,16 +33,18 @@ class TestScreen extends React.Component {
               <Text style={styles.weekBoxDateText}>March 24, 2006 22:30:00 UT</Text>
             </View>
           </View>
+        </View>
+        <View style={{ flex: 1 }}>
           <StyleProvider style={getTheme(material)}>
-            <Tabs style={{ marginTop: 60 }}>
+            <Tabs>
               <Tab heading="Info">
-                <Text>t</Text>
+                <View style={{ flex: 1, backgroundColor: Colors.launchDay }} />
               </Tab>
               <Tab heading="Mission">
-                <Text>q</Text>
+                <View style={{ flex: 1, backgroundColor: Colors.primary }} />
               </Tab>
               <Tab heading="Links">
-                <Text>e</Text>
+                <View style={{ flex: 1, backgroundColor: Colors.success }} />
               </Tab>
             </Tabs>
           </StyleProvider>
@@ -46,8 +56,9 @@ class TestScreen extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    flex: 0.2,
-    elevation: 10,
+    flex: 0.1,
+    elevation: 0.4,
+    backgroundColor: Colors.background,
   },
   iconBar: {
     flexDirection: 'row',
@@ -59,6 +70,9 @@ const styles = StyleSheet.create({
   iconBarIconLeft: {
     flex: 1,
   },
+  iconBarIconRight: {
+    flex: 0,
+  },
   iconBarIcon: {
     color: Colors.text,
   },
@@ -67,7 +81,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: -10,
+    marginTop: -30,
   },
   weekBoxWeekText: {
     fontSize: 24,
@@ -79,14 +93,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.disabledText,
     textAlign: 'center',
-    marginTop: -5,
-  },
-  divider: {
-    backgroundColor: Colors.disabledText,
-    flex: 0.02,
-    width: '80%',
-    alignSelf: 'center',
-    marginTop: 5,
   },
 })
 
