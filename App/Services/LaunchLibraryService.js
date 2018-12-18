@@ -26,6 +26,8 @@ function fetchLaunch(startDate, endDate) {
     '-' +
     addZeroToSingle(endDate.getDate())
 
+  console.log(url)
+
   return LaunchLibraryApiClient.get(url.toString()).then((response) => {
     if (response.ok) {
       const l = []
