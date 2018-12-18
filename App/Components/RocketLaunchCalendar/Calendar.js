@@ -20,7 +20,8 @@ export default class Calendar extends Component {
                   <View style={styles.dateHolder}>
                     <Text style={styles.dayText}>{days[item.day]}</Text>
                     <Text style={styles.dateText}>
-                      {months[item.date.getMonth()]} {item.date.getDate()}, {item.date.getFullYear}
+                      {months[item.date.getMonth()]} {item.date.getDate()},{' '}
+                      {item.date.getFullYear()}
                     </Text>
                   </View>
                   <View style={styles.launchDay}>
