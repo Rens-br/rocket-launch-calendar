@@ -1,6 +1,6 @@
 import { Text, Icon, Tab, Tabs, StyleProvider, Spinner } from 'native-base'
 import React from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Colors from 'App/Theme/Colors'
 import getTheme from 'App/native-base-theme/components'
@@ -8,6 +8,7 @@ import material from 'App/native-base-theme/variables/material'
 import NavigationService from 'App/Services/NavigationService'
 import InfoContent from 'App/Components/LaunchInfoScreenContent/InfoContent'
 import { pushNotifications } from 'App/Services/Index'
+import MainActions from 'App/Stores/Main/Actions'
 
 class TestScreen extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class TestScreen extends React.Component {
     this.state = {
       launch: null,
       nameSize: 24,
+      notificationTimes: [5, 6, 7],
     }
   }
 
@@ -24,6 +26,8 @@ class TestScreen extends React.Component {
     if (launch.name.length > 28) {
       s = 16
     }
+
+    console.log(launch)
 
     this.setState((previousState) => ({
       launch: launch,
@@ -43,26 +47,90 @@ class TestScreen extends React.Component {
     )
   }
 
-  setLaunchNotification = () => {
+  setDayNotification() {
     pushNotifications.scheduledNotification({
-      date: new Date(Date.now() + 10 * 1000),
+      date: new Date(Date.now() + 1 * 1000),
       autoCancel: true,
-      largeIcon: 'ic_launcher',
       smallIcon: 'ic_notification',
-      bigText: 'My big text that will be shown when notification is expanded',
-      subText: 'This is a subText',
-      color: 'green',
+      bigText:
+        'The ' +
+        this.state.launch.rocket.name +
+        ' will be launched today! Check the app for more information',
+      color: Colors.launchDay,
       vibrate: true,
       vibration: 300,
-      title: this.state.launch.name,
-      message: 'Rocket will be launched in '(this.state.launch.netstamp - Date.now() / 1000),
+      title: this.state.launch.name + ' launch is today!',
+      message: 'Check the app for the exact time',
       playSound: true,
       soundName: 'default',
+      id: this.state.launch.id.toString() + (0).toString(),
+    })
+  }
+
+  setLaunchNotification = () => {
+    let ids = []
+
+    if (this.state.launch.netstamp !== 0) {
+      if (new Date() <= new Date(this.state.launch.netstamp * 1000)) {
+        for (var i = 0; i < this.state.notificationTimes.length; i++) {
+          pushNotifications.scheduledNotification({
+            date: new Date(Date.now() + this.state.notificationTimes[i] * 1000),
+            autoCancel: true,
+            smallIcon: 'ic_notification',
+            bigText:
+              'The ' +
+              this.state.launch.rocket.name +
+              ' will be launched in ' +
+              this.state.notificationTimes[i] +
+              ' minutes!',
+            color: Colors.launchDay,
+            vibrate: true,
+            vibration: 300,
+            title: this.state.launch.name + ' -  T-' + this.state.notificationTimes[i] + ' minutes',
+            message: 'Rocket will be launched in ' + this.state.notificationTimes[i] + ' minutes!',
+            playSound: true,
+            soundName: 'default',
+            id: this.state.launch.id.toString() + (i + 1).toString(),
+          })
+
+          ids.push(this.state.launch.id.toString() + (i + 1).toString())
+        }
+      } else {
+        Alert.alert(
+          'Error subscribing to launch',
+          "This launch has already happened so you can't set a notification for it",
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+          { cancelable: true }
+        )
+        return
+      }
+    } else {
+      Alert.alert(
+        'Error subscribing to launch',
+        "We don't have an exact time for this launch yet, do you want to set a notification for the day?",
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              this.setDayNotification()
+              ids.push(this.state.launch.id.toString() + (0).toString())
+            },
+          },
+          { text: 'Cancel', onPress: () => console.log('OK Pressed') },
+        ],
+        { cancelable: true }
+      )
+    }
+
+    console.log(ids)
+    this.props.addNotification({
+      launchId: this.state.launch.id,
+      launchDate: this.state.launch.netstamp,
+      notificationIds: ids,
     })
   }
 
   render() {
-    console.log(this.state.launch)
     if (this.state.launch !== null) {
       return (
         <View style={{ flex: 1 }}>
@@ -163,9 +231,13 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapStateToProps = (state) => ({})
+const mapStateToProps = (state) => ({
+  notifications: state.main.notifications,
+})
 
-const mapDispatchToProps = (dispatch) => ({})
+const mapDispatchToProps = (dispatch) => ({
+  addNotification: (notification) => dispatch(MainActions.addNotification(notification)),
+})
 
 export default connect(
   mapStateToProps,
