@@ -51,15 +51,19 @@ class CalendarScreen extends React.Component {
 
     this.GetWeekNumber(nDate)
 
-    if (
-      nDate < new Date(this.props.savedLibraryLaunches.start) ||
-      nDate > new Date(this.props.savedLibraryLaunches.end)
-    ) {
+    if (this.props.savedLaunches === undefined) {
+      this.GetMonthLaunches(nDate)
+    } else {
       if (
-        nDate < new Date(this.props.libraryLaunches.start) ||
-        nDate > new Date(this.props.libraryLaunches.end)
+        nDate < new Date(this.props.savedLibraryLaunches.start) ||
+        nDate > new Date(this.props.savedLibraryLaunches.end)
       ) {
-        this.GetMonthLaunches(nDate)
+        if (
+          nDate < new Date(this.props.libraryLaunches.start) ||
+          nDate > new Date(this.props.libraryLaunches.end)
+        ) {
+          this.GetMonthLaunches(nDate)
+        }
       }
     }
   }
@@ -135,11 +139,13 @@ class CalendarScreen extends React.Component {
 
   GetDates = () => {
     let useSavedDates = false
-    if (
-      this.state.currentMonday >= new Date(this.props.savedLibraryLaunches.start) &&
-      this.state.currentMonday <= new Date(this.props.savedLibraryLaunches.end)
-    ) {
-      useSavedDates = true
+    if (this.props.savedLibraryLaunches !== undefined) {
+      if (
+        this.state.currentMonday >= new Date(this.props.savedLibraryLaunches.start) &&
+        this.state.currentMonday <= new Date(this.props.savedLibraryLaunches.end)
+      ) {
+        useSavedDates = true
+      }
     }
 
     if (this.props.savedLibraryLaunches === undefined) {
