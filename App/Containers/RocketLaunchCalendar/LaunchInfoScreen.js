@@ -7,6 +7,7 @@ import getTheme from 'App/native-base-theme/components'
 import material from 'App/native-base-theme/variables/material'
 import NavigationService from 'App/Services/NavigationService'
 import InfoContent from 'App/Components/LaunchInfoScreenContent/InfoContent'
+import { pushNotifications } from 'App/Services/Index'
 
 class TestScreen extends React.Component {
   constructor(props) {
@@ -42,6 +43,24 @@ class TestScreen extends React.Component {
     )
   }
 
+  setLaunchNotification = () => {
+    pushNotifications.scheduledNotification({
+      date: new Date(Date.now() + 10 * 1000),
+      autoCancel: true,
+      largeIcon: 'ic_launcher',
+      smallIcon: 'ic_notification',
+      bigText: 'My big text that will be shown when notification is expanded',
+      subText: 'This is a subText',
+      color: 'green',
+      vibrate: true,
+      vibration: 300,
+      title: this.state.launch.name,
+      message: 'Rocket will be launched in '(this.state.launch.netstamp - Date.now() / 1000),
+      playSound: true,
+      soundName: 'default',
+    })
+  }
+
   render() {
     console.log(this.state.launch)
     if (this.state.launch !== null) {
@@ -52,7 +71,10 @@ class TestScreen extends React.Component {
               <TouchableOpacity onPress={this.ExitScreen} style={styles.iconBarIconLeft}>
                 <Icon name="arrow-left" type="Feather" style={styles.iconBarIcon} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={this.RefreshDates} style={styles.iconBarIconRight}>
+              <TouchableOpacity
+                onPress={this.setLaunchNotification}
+                style={styles.iconBarIconRight}
+              >
                 <Icon name="bell" type="Feather" style={styles.iconBarIcon} />
               </TouchableOpacity>
             </View>
