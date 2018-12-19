@@ -38,6 +38,7 @@ class CalendarScreen extends React.Component {
   }
 
   GetNextMonday = () => {
+    console.log(this.state)
     let nDate = new Date(
       this.state.currentMonday.getFullYear(),
       this.state.currentMonday.getMonth(),
@@ -69,6 +70,7 @@ class CalendarScreen extends React.Component {
   }
 
   GetPreviousMonday = (week) => {
+    console.log(this.state)
     let nDate = new Date(
       this.state.currentMonday.getFullYear(),
       this.state.currentMonday.getMonth(),
@@ -110,12 +112,17 @@ class CalendarScreen extends React.Component {
   }
 
   SetCurrentMonday = (date) => {
+    var day = date.getDate()
+    var weekday = date.getDay()
+    if (weekday === 0) date.setDate(day - 6)
+    else date.setDate(day - (weekday - 1))
+
     this.setState((previousState) => ({
       currentMonday: date,
       dates: [],
     }))
 
-    this.GetWeekNumber(date)
+    this.GetWeekNumber(date.toString())
 
     if (
       date < new Date(this.props.savedLibraryLaunches.start) ||
