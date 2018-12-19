@@ -16,7 +16,7 @@ class TestScreen extends React.Component {
     this.state = {
       launch: null,
       nameSize: 24,
-      notificationTimes: [5, 6, 7],
+      notificationTimes: [5, 10, 30],
     }
   }
 
@@ -39,19 +39,12 @@ class TestScreen extends React.Component {
     NavigationService.navigateAndReset('CalendarScreen')
   }
 
-  RenderInfoContent() {
-    return (
-      <View style={{ flex: 1, backgroundColor: Colors.contentBackground }}>
-        <Text> t </Text>
-      </View>
-    )
-  }
-
   setDayNotification() {
     pushNotifications.scheduledNotification({
       date: new Date(Date.now() + 1 * 1000),
       autoCancel: true,
       smallIcon: 'ic_notification',
+      largeIcon: '',
       bigText:
         'The ' +
         this.state.launch.rocket.name +
@@ -77,6 +70,7 @@ class TestScreen extends React.Component {
             date: new Date(Date.now() + this.state.notificationTimes[i] * 1000),
             autoCancel: true,
             smallIcon: 'ic_notification',
+            largeIcon: '',
             bigText:
               'The ' +
               this.state.launch.rocket.name +
@@ -214,7 +208,6 @@ const styles = StyleSheet.create({
     marginTop: -30,
   },
   launchNameText: {
-    width: '90%',
     alignSelf: 'center',
     color: Colors.text,
     textAlign: 'center',
