@@ -16,6 +16,7 @@ class TestScreen extends React.Component {
     this.state = {
       launch: null,
       nameSize: 24,
+      date: null,
       notificationTimes: [5, 10, 30],
     }
   }
@@ -30,11 +31,12 @@ class TestScreen extends React.Component {
     this.setState((previousState) => ({
       launch: launch,
       nameSize: s,
+      date: this.props.navigation.state.params.item.launches[0].date,
     }))
   }
 
   ExitScreen = () => {
-    let date = this.props.navigation.state.params.item.launches[0].date
+    let date = this.state.date
     NavigationService.navigateAndReset('CalendarScreen', { date })
   }
 
@@ -129,25 +131,20 @@ class TestScreen extends React.Component {
         <View style={{ flex: 1 }}>
           <View style={styles.header}>
             <View style={styles.iconBar}>
-              <TouchableOpacity onPress={this.ExitScreen} style={styles.iconBarIconLeft}>
+              <TouchableOpacity onPress={this.ExitScreen} style={styles.iconBarIcon}>
                 <Icon name="arrow-left" type="Feather" style={styles.iconBarIcon} />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this.setLaunchNotification}
-                style={styles.iconBarIconRight}
-              >
-                <Icon name="bell" type="Feather" style={styles.iconBarIcon} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.titleBox}>
-              <View>
+              <View style={styles.iconBarText}>
                 <Text style={({ fontSize: this.state.nameSize }, styles.launchNameText)}>
                   {this.state.launch.name}
                 </Text>
                 <Text style={styles.launchDateText}>
-                  {new Date(this.state.launch.netstamp * 1000).toString().substring(0, 24)}
+                  {new Date(this.state.date).toString().substring(0, 24)}
                 </Text>
               </View>
+              <TouchableOpacity onPress={this.setLaunchNotification} style={styles.iconBarIcon}>
+                <Icon name="bell" type="Feather" style={styles.iconBarIcon} />
+              </TouchableOpacity>
             </View>
           </View>
           <View style={{ flex: 1 }}>
@@ -190,21 +187,12 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     flex: 0.3,
   },
-  iconBarIconLeft: {
+  iconBarText: {
     flex: 1,
-  },
-  iconBarIconRight: {
-    flex: 0,
   },
   iconBarIcon: {
     color: Colors.text,
-  },
-  titleBox: {
-    flex: 0.6,
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: -30,
+    flex: 0,
   },
   launchNameText: {
     alignSelf: 'center',
