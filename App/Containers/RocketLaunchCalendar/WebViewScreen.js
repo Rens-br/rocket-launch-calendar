@@ -24,7 +24,7 @@ export default class WebViewScreen extends React.Component {
               <Icon
                 name="arrow-back"
                 onPress={() => {
-                  NavigationService.navigateAndReset('MainScreen')
+                  NavigationService.navigateAndReset('NewsScreen')
                 }}
               />
             </Button>

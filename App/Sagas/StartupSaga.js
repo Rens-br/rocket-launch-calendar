@@ -1,4 +1,3 @@
-import { put } from 'redux-saga/effects'
 import NavigationService from 'App/Services/NavigationService'
 
 /**
@@ -12,5 +11,5 @@ export function* startup() {
   // ...
 
   // When those operations are finished we redirect to the main screen
-  NavigationService.navigateAndReset('MainScreen')
+  NavigationService.navigateAndReset('NewsScreen')
 }

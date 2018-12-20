@@ -16,7 +16,7 @@ class TestScreen extends React.Component {
     this.state = {
       launch: null,
       date: null,
-      notificationTimes: [10],
+      notificationTimes: [5, 10, 30],
       notificationIds: [],
       isSubscribed: false,
     }
@@ -49,8 +49,10 @@ class TestScreen extends React.Component {
   }
 
   setDayNotification() {
+    let date = new Date(this.state.date)
+    date.setHours(0, 0, 0)
     pushNotifications.scheduledNotification({
-      date: new Date(Date.now() + 1 * 1000),
+      date: date,
       autoCancel: true,
       smallIcon: 'ic_notification',
       largeIcon: '',
@@ -129,7 +131,7 @@ class TestScreen extends React.Component {
 
     for (var i = 0; i < this.state.notificationTimes.length; i++) {
       pushNotifications.scheduledNotification({
-        date: new Date(Date.now() + this.state.notificationTimes[i] * 1000),
+        date: new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000),
         autoCancel: true,
         smallIcon: 'ic_notification',
         largeIcon: '',
@@ -148,7 +150,9 @@ class TestScreen extends React.Component {
         soundName: 'default',
         id: this.state.launch.id.toString() + (i + 1).toString(),
       })
-
+      console.log(
+        new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000)
+      )
       ids.push(this.state.launch.id.toString() + (i + 1).toString())
     }
     this.setState((previousState) => ({
