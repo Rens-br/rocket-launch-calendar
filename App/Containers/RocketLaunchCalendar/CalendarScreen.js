@@ -17,13 +17,14 @@ class CalendarScreen extends React.Component {
     super(props)
     this.state = {
       calendarType: 0,
-      currentMonday: new Date(),
+      currentMonday: null,
       dates: [],
       weekNumber: 0,
     }
   }
 
   componentDidMount() {
+    console.log(this.state)
     this.GetCurrentMonday()
     this.GetWeekNumber(new Date())
   }
@@ -230,6 +231,34 @@ class CalendarScreen extends React.Component {
     }
   }
 
+  CreateHeaderText() {
+    if (this.state.currentMonday === null) {
+      return (
+        <View>
+          <Text style={styles.weekBoxWeekText}>Week -</Text>
+          <Text style={styles.weekBoxDateText}> 00 - 00</Text>
+        </View>
+      )
+    } else {
+      return (
+        <View>
+          <Text style={styles.weekBoxWeekText}>Week {this.state.weekNumber}</Text>
+          <Text style={styles.weekBoxDateText}>
+            {this.state.currentMonday.toDateString().substring(4, 10)}
+            {' - '}
+            {new Date(
+              this.state.currentMonday.getFullYear(),
+              this.state.currentMonday.getMonth(),
+              this.state.currentMonday.getDate() + 6
+            )
+              .toDateString()
+              .substring(4, 10)}
+          </Text>
+        </View>
+      )
+    }
+  }
+
   render() {
     return (
       <View style={styles.mainView}>
@@ -256,20 +285,7 @@ class CalendarScreen extends React.Component {
             <TouchableOpacity onPress={this.GetPreviousMonday}>
               <Icon name="chevron-left" type="Feather" style={styles.weekBoxChevron} />
             </TouchableOpacity>
-            <View>
-              <Text style={styles.weekBoxWeekText}>Week {this.state.weekNumber}</Text>
-              <Text style={styles.weekBoxDateText}>
-                {this.state.currentMonday.toDateString().substring(4, 10)}
-                {' - '}
-                {new Date(
-                  this.state.currentMonday.getFullYear(),
-                  this.state.currentMonday.getMonth(),
-                  this.state.currentMonday.getDate() + 6
-                )
-                  .toDateString()
-                  .substring(4, 10)}
-              </Text>
-            </View>
+            {this.CreateHeaderText()}
             <TouchableOpacity onPress={this.GetNextMonday}>
               <Icon name="chevron-right" type="Feather" style={styles.weekBoxChevron} />
             </TouchableOpacity>
