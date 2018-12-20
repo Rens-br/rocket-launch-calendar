@@ -24,4 +24,10 @@ const scheduledNotification = (data) => {
   PushNotification.localNotificationSchedule(data)
 }
 
-export { configure, scheduledNotification }
+const cancelLaunchNotifications = (data) => {
+  for (var i = 0; i < data.length; i++) {
+    PushNotification.cancelLocalNotifications({ id: data[i].toString() })
+  }
+}
+
+export { configure, scheduledNotification, cancelLaunchNotifications }

@@ -23,7 +23,22 @@ export const addNotification = (state, { notification }) => {
   }
 }
 
+export const removeNotificationsById = (state, { id }) => {
+  let l = state.notifications
+  for (var i = 0; i < l.length; i++) {
+    if (l[i].launchId === id) {
+      l.splice(i, 1)
+    }
+  }
+  console.log(l)
+  return {
+    currentDate: state.currentDate,
+    notifications: l,
+  }
+}
+
 export const reducer = createReducer(INITIAL_STATE, {
   [MainTypes.SET_CURRENT_DATE]: setCurrentDate,
   [MainTypes.ADD_NOTIFICATION]: addNotification,
+  [MainTypes.REMOVE_NOTIFICATIONS_BY_ID]: removeNotificationsById,
 })

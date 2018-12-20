@@ -15,23 +15,31 @@ class TestScreen extends React.Component {
     super(props)
     this.state = {
       launch: null,
-      nameSize: 24,
       date: null,
-      notificationTimes: [5, 10, 30],
+      notificationTimes: [10],
+      notificationIds: [],
+      isSubscribed: false,
     }
   }
 
   componentDidMount() {
     let launch = this.props.navigation.state.params.item.launches[0].launch
-    let s = 24
-    if (launch.name.length > 28) {
-      s = 16
+
+    let notifications = []
+    let subscribed = false
+
+    for (var i = 0; i < this.props.notifications.length; i++) {
+      if (this.props.notifications[i].launchId === launch.id) {
+        notifications = this.props.notifications[i].notificationIds
+        subscribed = true
+      }
     }
 
     this.setState((previousState) => ({
       launch: launch,
-      nameSize: s,
       date: this.props.navigation.state.params.item.launches[0].date,
+      notificationIds: notifications,
+      isSubscribed: subscribed,
     }))
   }
 
@@ -61,63 +69,92 @@ class TestScreen extends React.Component {
     })
   }
 
-  setLaunchNotification = () => {
-    let ids = []
+  unsubscribeLaunch = () => {
+    this.props.removeNotificationsById(this.state.launch.id)
+    pushNotifications.cancelLaunchNotifications(this.state.notificationIds)
+    this.setState((previousState) => ({
+      isSubscribed: false,
+    }))
+  }
 
-    if (this.state.launch.netstamp !== 0) {
-      if (new Date() <= new Date(this.state.launch.netstamp * 1000)) {
-        for (var i = 0; i < this.state.notificationTimes.length; i++) {
-          pushNotifications.scheduledNotification({
-            date: new Date(Date.now() + this.state.notificationTimes[i] * 1000),
-            autoCancel: true,
-            smallIcon: 'ic_notification',
-            largeIcon: '',
-            bigText:
-              'The ' +
-              this.state.launch.rocket.name +
-              ' will be launched in ' +
-              this.state.notificationTimes[i] +
-              ' minutes!',
-            color: Colors.launchDay,
-            vibrate: true,
-            vibration: 300,
-            title: this.state.launch.name + ' -  T-' + this.state.notificationTimes[i] + ' minutes',
-            message: 'Rocket will be launched in ' + this.state.notificationTimes[i] + ' minutes!',
-            playSound: true,
-            soundName: 'default',
-            id: this.state.launch.id.toString() + (i + 1).toString(),
-          })
+  subscribeLaunch = () => {
+    if (this.state.isSubscribed) {
+      this.unsubscribeLaunch()
+    } else {
+      if (this.state.launch.netstamp !== 0) {
+        if (new Date() <= new Date(this.state.launch.netstamp * 1000)) {
+          this.setState((previousState) => ({
+            isSubscribed: true,
+          }))
 
-          ids.push(this.state.launch.id.toString() + (i + 1).toString())
+          this.setLaunchNotification()
+        } else {
+          Alert.alert(
+            'Error subscribing to launch',
+            "This launch has already happened so you can't set a notification for it",
+            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            { cancelable: true }
+          )
         }
       } else {
         Alert.alert(
           'Error subscribing to launch',
-          "This launch has already happened so you can't set a notification for it",
-          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+          "We don't have an exact time for this launch yet, do you want to set a notification for the day?",
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                this.setDayNotification()
+                this.setState((previousState) => ({
+                  isSubscribed: true,
+                  notificationIds: [this.state.launch.id.toString() + (0).toString()],
+                }))
+                this.props.addNotification({
+                  launchId: this.state.launch.id,
+                  launchDate: this.state.launch.netstamp,
+                  notificationIds: [this.state.launch.id.toString() + (0).toString()],
+                })
+              },
+            },
+            { text: 'Cancel', onPress: () => console.log('OK Pressed') },
+          ],
           { cancelable: true }
         )
-        return
       }
-    } else {
-      Alert.alert(
-        'Error subscribing to launch',
-        "We don't have an exact time for this launch yet, do you want to set a notification for the day?",
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              this.setDayNotification()
-              ids.push(this.state.launch.id.toString() + (0).toString())
-            },
-          },
-          { text: 'Cancel', onPress: () => console.log('OK Pressed') },
-        ],
-        { cancelable: true }
-      )
     }
+  }
 
-    console.log(ids)
+  setLaunchNotification = () => {
+    let ids = []
+
+    for (var i = 0; i < this.state.notificationTimes.length; i++) {
+      pushNotifications.scheduledNotification({
+        date: new Date(Date.now() + this.state.notificationTimes[i] * 1000),
+        autoCancel: true,
+        smallIcon: 'ic_notification',
+        largeIcon: '',
+        bigText:
+          'The ' +
+          this.state.launch.rocket.name +
+          ' will be launched in ' +
+          this.state.notificationTimes[i] +
+          ' minutes!',
+        color: Colors.launchDay,
+        vibrate: true,
+        vibration: 300,
+        title: this.state.launch.name + ' -  T-' + this.state.notificationTimes[i] + ' minutes',
+        message: 'Rocket will be launched in ' + this.state.notificationTimes[i] + ' minutes!',
+        playSound: true,
+        soundName: 'default',
+        id: this.state.launch.id.toString() + (i + 1).toString(),
+      })
+
+      ids.push(this.state.launch.id.toString() + (i + 1).toString())
+    }
+    this.setState((previousState) => ({
+      isSubscribed: true,
+      notificationIds: ids,
+    }))
     this.props.addNotification({
       launchId: this.state.launch.id,
       launchDate: this.state.launch.netstamp,
@@ -135,15 +172,17 @@ class TestScreen extends React.Component {
                 <Icon name="arrow-left" type="Feather" style={styles.iconBarIcon} />
               </TouchableOpacity>
               <View style={styles.iconBarText}>
-                <Text style={({ fontSize: this.state.nameSize }, styles.launchNameText)}>
-                  {this.state.launch.name}
-                </Text>
+                <Text style={styles.launchNameText}>{this.state.launch.name}</Text>
                 <Text style={styles.launchDateText}>
                   {new Date(this.state.date).toString().substring(0, 24)}
                 </Text>
               </View>
-              <TouchableOpacity onPress={this.setLaunchNotification} style={styles.iconBarIcon}>
-                <Icon name="bell" type="Feather" style={styles.iconBarIcon} />
+              <TouchableOpacity onPress={this.subscribeLaunch} style={styles.iconBarIcon}>
+                <Icon
+                  name={this.state.isSubscribed ? 'bell-off' : 'bell'}
+                  type="Feather"
+                  style={styles.iconBarIcon}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -217,6 +256,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addNotification: (notification) => dispatch(MainActions.addNotification(notification)),
+  removeNotificationsById: (id) => dispatch(MainActions.removeNotificationsById(id)),
 })
 
 export default connect(
