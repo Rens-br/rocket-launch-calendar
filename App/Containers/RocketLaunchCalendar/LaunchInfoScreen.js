@@ -27,8 +27,6 @@ class TestScreen extends React.Component {
       s = 16
     }
 
-    console.log(launch)
-
     this.setState((previousState) => ({
       launch: launch,
       nameSize: s,
@@ -36,7 +34,8 @@ class TestScreen extends React.Component {
   }
 
   ExitScreen = () => {
-    NavigationService.navigateAndReset('CalendarScreen')
+    let date = this.props.navigation.state.params.item.launches[0].date
+    NavigationService.navigateAndReset('CalendarScreen', { date })
   }
 
   setDayNotification() {

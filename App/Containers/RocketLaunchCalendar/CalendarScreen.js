@@ -24,9 +24,15 @@ class CalendarScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state)
-    this.GetCurrentMonday()
-    this.GetWeekNumber(new Date())
+    console.log(this.props.navigation.state.params)
+    if (this.props.navigation.state.params !== undefined) {
+      let date = new Date(this.props.navigation.state.params.date)
+      this.GetCurrentMonday(date)
+      this.GetWeekNumber(date)
+    } else {
+      this.GetCurrentMonday(new Date())
+      this.GetWeekNumber(new Date())
+    }
   }
 
   GetWeekNumber = (week) => {
@@ -39,7 +45,6 @@ class CalendarScreen extends React.Component {
   }
 
   GetNextMonday = () => {
-    console.log(this.state)
     let nDate = new Date(
       this.state.currentMonday.getFullYear(),
       this.state.currentMonday.getMonth(),
@@ -52,8 +57,8 @@ class CalendarScreen extends React.Component {
     }))
 
     this.GetWeekNumber(nDate)
-
-    if (this.props.savedLaunches === undefined) {
+    console.log(this.props.savedLaunches)
+    if (this.props.savedLibraryLaunches === undefined) {
       this.GetMonthLaunches(nDate)
     } else {
       if (
@@ -71,7 +76,6 @@ class CalendarScreen extends React.Component {
   }
 
   GetPreviousMonday = (week) => {
-    console.log(this.state)
     let nDate = new Date(
       this.state.currentMonday.getFullYear(),
       this.state.currentMonday.getMonth(),
@@ -98,9 +102,9 @@ class CalendarScreen extends React.Component {
     }
   }
 
-  GetCurrentMonday = () => {
+  GetCurrentMonday = (startDate) => {
     this.setState((previousState) => ({ currentMonday: null }))
-    var date = new Date()
+    var date = startDate
     var day = date.getDate()
     var weekday = date.getDay()
     if (weekday === 0) date.setDate(day - 6)
@@ -155,8 +159,9 @@ class CalendarScreen extends React.Component {
         useSavedDates = true
       }
     }
-
+    console.log(this.props.sa)
     if (this.props.savedLibraryLaunches === undefined) {
+      console.log('saving')
       this.props.saveLibraryLaunches()
       return null
     }
@@ -210,7 +215,6 @@ class CalendarScreen extends React.Component {
     } else if (this.state.dates.length === 0) {
       this.GetDates()
     } else {
-      console.log(this.state)
       if (this.state.calendarType === 0) {
         return (
           <View style={styles.calendarView}>
