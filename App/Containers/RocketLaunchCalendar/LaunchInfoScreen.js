@@ -28,10 +28,12 @@ class TestScreen extends React.Component {
     let notifications = []
     let subscribed = false
 
-    for (var i = 0; i < this.props.notifications.length; i++) {
-      if (this.props.notifications[i].launchId === launch.id) {
-        notifications = this.props.notifications[i].notificationIds
-        subscribed = true
+    if (this.props.notifications !== undefined) {
+      for (var i = 0; i < this.props.notifications.length; i++) {
+        if (this.props.notifications[i].launchId === launch.id) {
+          notifications = this.props.notifications[i].notificationIds
+          subscribed = true
+        }
       }
     }
 
@@ -126,12 +128,14 @@ class TestScreen extends React.Component {
     }
   }
 
+  // new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000)
+
   setLaunchNotification = () => {
     let ids = []
 
     for (var i = 0; i < this.state.notificationTimes.length; i++) {
       pushNotifications.scheduledNotification({
-        date: new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000),
+        date: new Date(Date.now() + 5000 * i),
         autoCancel: true,
         smallIcon: 'ic_notification',
         largeIcon: '',

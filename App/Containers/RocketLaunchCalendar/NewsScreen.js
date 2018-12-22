@@ -75,7 +75,7 @@ class NewsScreen extends React.Component {
         <CardList
           cardData={this.state.cards}
           refresh={this.getNews}
-          refreshing={this.props.loading}
+          refreshing={this.props.loading === undefined ? false : this.props.loading}
           onEndReachedThreshold={1}
           endReached={this.addNews}
         />
