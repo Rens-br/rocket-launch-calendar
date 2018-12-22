@@ -23,6 +23,7 @@ export default class CardList extends Component {
       return (
         <FlatList
           data={this.state.cards}
+          keyExtractor={(item) => item.data._id}
           renderItem={({ item }) => {
             return (
               <Card

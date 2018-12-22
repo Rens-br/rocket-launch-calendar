@@ -24,34 +24,47 @@ class NewsScreen extends React.Component {
     this.setState((previousState) => ({ currentPage: 1 }))
     this.props.fetchNews(this.state.currentPage)
     this.createCardList()
-    console.log('fetch')
   }
 
   addNews = () => {
     this.setState((previousState) => ({ currentPage: previousState.currentPage + 1 }))
-    this.props.fetchNews(this.state.currentPage)
-    this.addCards()
+    this.props.fetchNews(this.state.currentPage + 1)
+    this.addCards(this.state.currentPage + 1)
   }
 
   createCardList = () => {
+    if (this.props.articles === undefined || this.props.articles === null) return
+    let t = this
+    if (this.props.articles.Page !== 1) {
+      setTimeout(function() {
+        t.createCardList()
+      }, 1000)
+      return
+    }
     let c = []
-    if (this.props.articles === undefined) return
-    for (let i = 0; i < this.props.articles.length; i++) {
+    for (let i = 0; i < this.props.articles.News.length; i++) {
       c.push({
         type: 'Article',
-        date: this.props.articles[i].date_added,
-        data: this.props.articles[i],
+        date: this.props.articles.News[i].date_added,
+        data: this.props.articles.News[i],
       })
     }
     this.setState((previousState) => ({ cards: c }))
   }
 
-  addCards = () => {
-    for (let i = 0; i < this.props.articles.length; i++) {
+  addCards = (page) => {
+    let t = this
+    if (this.props.articles.Page !== page) {
+      setTimeout(function() {
+        t.addCards(page)
+      }, 1000)
+      return
+    }
+    for (let i = 0; i < this.props.articles.News.length; i++) {
       this.state.cards.push({
         type: 'Article',
-        date: this.props.articles[i].date_added,
-        data: this.props.articles[i],
+        date: this.props.articles.News[i].date_added,
+        data: this.props.articles.News[i],
       })
     }
   }
@@ -63,6 +76,7 @@ class NewsScreen extends React.Component {
           cardData={this.state.cards}
           refresh={this.getNews}
           refreshing={this.props.loading}
+          onEndReachedThreshold={1}
           endReached={this.addNews}
         />
       </View>
@@ -88,7 +102,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchNews: () => dispatch(SpaceFlightNewsActions.fetchNews()),
+  fetchNews: (page) => dispatch(SpaceFlightNewsActions.fetchNews(page)),
 })
 
 export default connect(
