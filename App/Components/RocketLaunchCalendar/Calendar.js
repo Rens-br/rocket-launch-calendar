@@ -16,7 +16,7 @@ export default class Calendar extends Component {
                   this.props.pressItem(item)
                 }}
               >
-                <View style={styles.dayHolder}>
+                <View style={item.today ? styles.todayHolder : styles.dayHolder}>
                   <View style={styles.dateHolder}>
                     <Text style={styles.dayText}>{days[item.day]}</Text>
                     <Text style={styles.dateText}>
@@ -32,7 +32,7 @@ export default class Calendar extends Component {
             )
           } else {
             return (
-              <View style={styles.dayHolder}>
+              <View style={item.today ? styles.todayHolder : styles.dayHolder}>
                 <View style={styles.dateHolder}>
                   <Text style={styles.dayText}>{days[item.day]}</Text>
                   <Text style={styles.dateText}>
@@ -66,6 +66,17 @@ const months = [
 ]
 
 const styles = StyleSheet.create({
+  todayHolder: {
+    borderWidth: 3,
+    borderColor: Colors.launchDay,
+    borderRadius: 13,
+    alignSelf: 'center',
+    marginTop: 20,
+    width: '90%',
+    height: 70,
+    backgroundColor: Colors.text,
+    flexDirection: 'row',
+  },
   dayHolder: {
     alignSelf: 'center',
     marginTop: 20,

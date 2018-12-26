@@ -196,6 +196,10 @@ class CalendarScreen extends React.Component {
         launchDay: e,
         date: d,
         launches: l,
+        today:
+          new Date().getFullYear() === d.getFullYear() &&
+          new Date().getMonth() === d.getMonth() &&
+          new Date().getDate() === d.getDate(),
       })
     }
     this.setState((previousState) => ({ dates: dates }))
