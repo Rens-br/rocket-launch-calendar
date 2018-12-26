@@ -19,14 +19,22 @@ class TestScreen extends React.Component {
       notificationTimes: [5, 10, 30],
       notificationIds: [],
       isSubscribed: false,
+      canSubscribe: true,
     }
   }
 
   componentDidMount() {
     let launch = this.props.navigation.state.params.item.launches[0].launch
+    let date = this.props.navigation.state.params.item.launches[0].date
+
+    let canSubscribe = true
 
     let notifications = []
     let subscribed = false
+
+    if (new Date(date) < new Date()) {
+      canSubscribe = false
+    }
 
     if (this.props.notifications !== undefined) {
       for (var i = 0; i < this.props.notifications.length; i++) {
@@ -39,9 +47,10 @@ class TestScreen extends React.Component {
 
     this.setState((previousState) => ({
       launch: launch,
-      date: this.props.navigation.state.params.item.launches[0].date,
+      date: date,
       notificationIds: notifications,
       isSubscribed: subscribed,
+      canSubscribe: canSubscribe,
     }))
   }
 
@@ -135,7 +144,7 @@ class TestScreen extends React.Component {
 
     for (var i = 0; i < this.state.notificationTimes.length; i++) {
       pushNotifications.scheduledNotification({
-        date: new Date(Date.now() + 5000 * i),
+        date: new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000),
         autoCancel: true,
         smallIcon: 'ic_notification',
         largeIcon: '',
@@ -185,11 +194,14 @@ class TestScreen extends React.Component {
                   {new Date(this.state.date).toString().substring(0, 24)}
                 </Text>
               </View>
-              <TouchableOpacity onPress={this.subscribeLaunch} style={styles.iconBarIcon}>
+              <TouchableOpacity
+                onPress={this.state.canSubscribe ? this.subscribeLaunch : null}
+                style={styles.iconBarIcon}
+              >
                 <Icon
                   name={this.state.isSubscribed ? 'bell-off' : 'bell'}
                   type="Feather"
-                  style={styles.iconBarIcon}
+                  style={this.state.canSubscribe ? styles.iconBarIcon : styles.iconBarIconDisabled}
                 />
               </TouchableOpacity>
             </View>
@@ -239,6 +251,10 @@ const styles = StyleSheet.create({
   },
   iconBarIcon: {
     color: Colors.text,
+    flex: 0,
+  },
+  iconBarIconDisabled: {
+    color: Colors.disabledText,
     flex: 0,
   },
   launchNameText: {
