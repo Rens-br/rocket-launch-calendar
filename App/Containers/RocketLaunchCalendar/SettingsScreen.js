@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, WebView, StyleSheet, Platform, Clipboard } from 'react-native'
-import { Header, Left, Title, Subtitle, Right, Body, Button, Icon, Text } from 'native-base'
-import { Switch, Divider } from 'react-native-paper'
-import NavigationService from '../../Services/NavigationService'
+import { View, StyleSheet } from 'react-native'
+import { Text } from 'native-base'
+import { Divider } from 'react-native-paper'
+import SettingsToggle from 'App/Components/RocketLaunchCalendar/SettingsToggle'
+import SettingsSelection from 'App/Components/RocketLaunchCalendar/SettingsSelection'
 import Colors from '../../Theme/Colors'
 
 export default class SettingsScreen extends React.Component {
@@ -13,63 +14,26 @@ export default class SettingsScreen extends React.Component {
           <Text style={styles.title}>Settings</Text>
         </View>
         <View style={styles.content}>
-          <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>Notifications</Text>
-          <View
-            style={{
-              height: 50,
-              margin: 2,
-              marginRight: 10,
-              marginLeft: 10,
-              justifyContent: 'center',
+          <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>
+            Notifications
+          </Text>
+          <SettingsToggle
+            text={'Notification Sound'}
+            onToggle={(t) => {
+              console.log(t)
             }}
-          >
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ flex: 1, fontSize: 20, color: Colors.text }}>Notification Sound</Text>
-              <Switch
-                style={{ flex: 0 }}
-                color={Colors.launchDay}
-                value={true}
-                onValueChange={() => {}}
-              />
-            </View>
-          </View>
+            initialState={false}
+          />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
-          <View
-            style={{
-              height: 50,
-              margin: 2,
-              marginRight: 10,
-              marginLeft: 10,
-              justifyContent: 'center',
+          <SettingsToggle
+            text={'Notification Vibration'}
+            onToggle={(t) => {
+              console.log(t)
             }}
-          >
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={{ flex: 1, fontSize: 20, color: Colors.text }}>
-                Notification Vibration
-              </Text>
-              <Switch
-                style={{ flex: 0 }}
-                color={Colors.launchDay}
-                value={true}
-                onValueChange={() => {}}
-              />
-            </View>
-          </View>
+            initialState={true}
+          />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
-          <View
-            style={{
-              height: 50,
-              margin: 2,
-              marginRight: 10,
-              marginLeft: 10,
-              justifyContent: 'center',
-            }}
-          >
-            <Text style={{ flex: 1, fontSize: 20, color: Colors.text }}>
-              Notification Interval
-            </Text>
-            <Text style={{ flex: 1, fontSize: 14, color: Colors.disabledText }}>5, 10, 30</Text>
-          </View>
+          <SettingsSelection numeric text={'Notification Interval'} options={['10']} />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
         </View>
       </View>
