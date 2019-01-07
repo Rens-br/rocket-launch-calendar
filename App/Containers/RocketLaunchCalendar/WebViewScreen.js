@@ -1,9 +1,21 @@
 import React from 'react'
 import { View, WebView, StyleSheet, Platform, Clipboard } from 'react-native'
-import { Header, Left, Title, Subtitle, Right, Body, Button, Icon } from 'native-base'
+import {
+  Header,
+  Left,
+  Title,
+  Subtitle,
+  Right,
+  Body,
+  Button,
+  Icon,
+  StyleProvider,
+} from 'native-base'
 import NavigationService from '../../Services/NavigationService'
 import Colors from '../../Theme/Colors'
 import { Snackbar } from 'react-native-paper'
+import getTheme from 'App/native-base-theme/components'
+import material from 'App/native-base-theme/variables/material'
 
 export default class WebViewScreen extends React.Component {
   state = {
@@ -15,40 +27,42 @@ export default class WebViewScreen extends React.Component {
     const { navigation } = this.props
     return (
       <View style={styles.container}>
-        <Header
-          style={{ backgroundColor: Colors.background }}
-          androidStatusBarColor={Colors.background}
-        >
-          <Left>
-            <Button transparent>
-              <Icon
-                name="arrow-back"
-                onPress={() => {
-                  NavigationService.navigateAndReset('NewsScreen')
+        <StyleProvider style={getTheme(material)}>
+          <Header
+            style={{ backgroundColor: Colors.background }}
+            androidStatusBarColor={Colors.background}
+          >
+            <Left>
+              <Button transparent>
+                <Icon
+                  name="arrow-back"
+                  onPress={() => {
+                    NavigationService.navigateAndReset('NewsScreen')
+                  }}
+                />
+              </Button>
+            </Left>
+            <Body>
+              <Title
+                onLongPress={() => {
+                  this.setState({ snackbarVisible: true })
+                  Clipboard.setString(navigation.getParam('url', 'www.google.com'))
                 }}
-              />
-            </Button>
-          </Left>
-          <Body>
-            <Title
-              onLongPress={() => {
-                this.setState({ snackbarVisible: true })
-                Clipboard.setString(navigation.getParam('url', 'www.google.com'))
-              }}
-            >
-              {navigation.getParam('title', '')}
-            </Title>
-            <Subtitle
-              onLongPress={() => {
-                this.setState({ snackbarVisible: true })
-                Clipboard.setString(navigation.getParam('url', 'www.google.com'))
-              }}
-            >
-              {navigation.getParam('source', '')}
-            </Subtitle>
-          </Body>
-          <Right />
-        </Header>
+              >
+                {navigation.getParam('title', '')}
+              </Title>
+              <Subtitle
+                onLongPress={() => {
+                  this.setState({ snackbarVisible: true })
+                  Clipboard.setString(navigation.getParam('url', 'www.google.com'))
+                }}
+              >
+                {navigation.getParam('source', '')}
+              </Subtitle>
+            </Body>
+            <Right />
+          </Header>
+        </StyleProvider>
         <WebView
           style={styles.WebViewStyle}
           source={{ uri: navigation.getParam('url', 'www.google.com') }}
