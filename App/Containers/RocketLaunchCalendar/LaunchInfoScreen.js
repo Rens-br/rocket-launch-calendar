@@ -26,7 +26,6 @@ class TestScreen extends React.Component {
   componentDidMount() {
     let launch = this.props.navigation.state.params.item.launches[0].launch
     let date = this.props.navigation.state.params.item.launches[0].date
-
     let canSubscribe = true
 
     let notifications = []
@@ -211,9 +210,6 @@ class TestScreen extends React.Component {
               <Tabs>
                 <Tab heading="Info">
                   <InfoContent />
-                </Tab>
-                <Tab heading="Mission">
-                  <View style={{ flex: 1, backgroundColor: Colors.primary }} />
                 </Tab>
                 <Tab heading="Links">
                   <View style={{ flex: 1, backgroundColor: Colors.success }} />
