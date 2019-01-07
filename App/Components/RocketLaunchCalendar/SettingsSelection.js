@@ -11,18 +11,15 @@ export default class SettingsToggle extends Component {
       isOpen: false,
       text: '',
       numeric: false,
+      canBeEmpty: false,
     }
   }
 
   componentDidMount() {
-    let n = false
-    if (this.props.numeric) {
-      n = true
-    }
-
     this.setState(() => ({
       options: this.props.options,
-      numeric: n,
+      numeric: this.props.numeric,
+      canBeEmpty: this.props.canBeEmpty,
     }))
   }
 
@@ -49,7 +46,10 @@ export default class SettingsToggle extends Component {
   }
 
   RemoveValue = (value) => {
-    if (this.state.options.includes(this.state.text) || this.state.options.length === 1) {
+    if (this.state.options.includes(this.state.text)) {
+      return
+    }
+    if (!this.state.canBeEmpty && this.state.options.length === 1) {
       return
     }
     let o = this.state.options
@@ -71,7 +71,7 @@ export default class SettingsToggle extends Component {
           }}
         >
           <View style={styles.modalHeader}>
-            <Text style={styles.headerTitle}>Notification Interval</Text>
+            <Text style={styles.headerTitle}>{this.props.text}</Text>
           </View>
           <View style={styles.modalMain}>
             <View style={styles.modalContent}>
@@ -127,7 +127,11 @@ export default class SettingsToggle extends Component {
           >
             <View style={styles.content}>
               <Text style={styles.title}>{this.props.text}</Text>
-              <Text style={styles.options}>{this.state.options.toString()}</Text>
+              <Text style={styles.options}>
+                {this.state.options.length === 0
+                  ? this.props.defaultState
+                  : this.state.options.toString()}
+              </Text>
             </View>
           </TouchableRipple>
         </View>

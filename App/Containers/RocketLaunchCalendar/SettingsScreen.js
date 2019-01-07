@@ -35,6 +35,18 @@ export default class SettingsScreen extends React.Component {
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
           <SettingsSelection numeric text={'Notification Interval'} options={['10']} />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
+          <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>
+            News
+          </Text>
+          <SettingsSelection canBeEmpty text={'Shown tags'} options={[]} defaultState={'All'} />
+          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
+          <SettingsSelection
+            canBeEmpty
+            text={'Shown news sources'}
+            options={[]}
+            defaultState={'All'}
+          />
+          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
         </View>
       </View>
     )
