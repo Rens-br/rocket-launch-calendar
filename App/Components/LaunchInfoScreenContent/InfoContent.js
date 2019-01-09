@@ -1,75 +1,58 @@
-import React, { Component } from 'react'
-import { Footer, FooterTab, Button, Icon, Text, StyleProvider, View } from 'native-base'
-import { Divider } from 'react-native-paper'
-import Colors from 'App/Theme/Colors'
-import { StyleSheet } from 'react-native'
 import InfoText from 'App/Components/RocketLaunchCalendar/InfoText'
+import Colors from 'App/Theme/Colors'
+import { Text, View } from 'native-base'
+import React, { Component } from 'react'
+import { StyleSheet } from 'react-native'
+import { Divider } from 'react-native-paper'
 
 export default class InfoContent extends Component {
+  renderMission(missions) {
+    if (missions !== undefined && missions !== null && missions.length !== 0) {
+      console.log(missions)
+      return (
+        <View style={styles.missionFilledContent}>
+          <InfoText infoType={'Mission'} info={missions[0].name} subText={'Earth science'} />
+          <Divider style={styles.divider} />
+          <View style={styles.missionDescContent}>
+            <Text style={styles.missionDescType}>Description</Text>
+            <Text style={styles.missionDescInfo}>{missions[0].description}</Text>
+          </View>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.missionEmptyContent}>
+          <InfoText infoType={'Mission'} info={'Unknown'} />
+        </View>
+      )
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.content}>
-          <InfoText infoType={'Launch Service Provider'} info={'Arianespace'} />
-          <Divider
-            style={{
-              height: 2,
-              backgroundColor: Colors.background,
-              marginTop: 4,
-              marginBottom: 4,
-            }}
+          <InfoText infoType={'Launch Service Provider'} info={this.props.launch.lsp.name} />
+          <Divider style={styles.divider} />
+          <InfoText
+            infoType={'Rocket'}
+            info={
+              this.props.launch.rocket === undefined ? 'Unknown' : this.props.launch.rocket.name
+            }
           />
-          <InfoText infoType={'Rocket'} info={'Vega'} />
-          <Divider
-            style={{
-              height: 2,
-              backgroundColor: Colors.background,
-              marginTop: 4,
-              marginBottom: 4,
-            }}
-          />
+          <Divider style={styles.divider} />
           <InfoText
             infoType={'Location'}
-            info={'Ariane Launch Area 1'}
-            subText={'Kourou, French Guiana'}
+            info={this.props.launch.location.pads[0].name.substring(
+              0,
+              this.props.launch.location.pads[0].name.indexOf(',')
+            )}
+            subText={
+              this.props.launch.location === undefined ? '' : this.props.launch.location.name
+            }
           />
-          <Divider
-            style={{
-              height: 2,
-              backgroundColor: Colors.background,
-              marginTop: 4,
-              marginBottom: 4,
-            }}
-          />
-          <InfoText infoType={'Agency'} info={'European Space Agency'} />
-          <Divider
-            style={{
-              height: 2,
-              backgroundColor: Colors.background,
-              marginTop: 4,
-              marginBottom: 4,
-            }}
-          />
-          <InfoText infoType={'Mission'} info={'ADM-Aeolus'} subText={'Earth science'} />
-          <Divider
-            style={{
-              height: 2,
-              backgroundColor: Colors.background,
-              marginTop: 4,
-              marginBottom: 4,
-            }}
-          />
-          <View style={{ flex: 1, margin: 10, marginTop: 4 }}>
-            <Text style={{ color: Colors.disabledText, fontSize: 14 }}>Description</Text>
-            <Text style={{ color: Colors.text, fontSize: 16 }}>
-              ADM-Aeolus is an Earth observation satellite build by Airbus Defense and Space for
-              ESA. Its goal is to directly observe wind profiles from space on a global scale and
-              provide data that could improve weather forecasting and advance understanding of
-              atmospherics dynamics and climate. The Aeolus satellite weighs around 1366 kg and will
-              fly in low sun-synchronous orbit at about 400 km altitude. There it will be monitoring
-              weather around the world for 3 years.
-            </Text>
-          </View>
+          <Divider style={styles.divider} />
+          {this.renderMission(this.props.launch.missions)}
         </View>
       </View>
     )
@@ -86,5 +69,30 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     alignSelf: 'center',
+  },
+  divider: {
+    height: 2,
+    backgroundColor: Colors.background,
+    marginTop: 20,
+    marginBottom: 4,
+  },
+  missionFilledContent: {
+    flex: 1.9,
+  },
+  missionEmptyContent: {
+    flex: 1,
+  },
+  missionDescContent: {
+    flex: 1,
+    margin: 10,
+    marginTop: 4,
+  },
+  missionDescType: {
+    color: Colors.disabledText,
+    fontSize: 14,
+  },
+  missionDescInfo: {
+    color: Colors.text,
+    fontSize: 16,
   },
 })

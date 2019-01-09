@@ -1,14 +1,14 @@
-import { Text, Icon, Tab, Tabs, StyleProvider, Spinner } from 'native-base'
-import React from 'react'
-import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native'
-import { connect } from 'react-redux'
-import Colors from 'App/Theme/Colors'
+import InfoContent from 'App/Components/LaunchInfoScreenContent/InfoContent'
 import getTheme from 'App/native-base-theme/components'
 import material from 'App/native-base-theme/variables/material'
-import NavigationService from 'App/Services/NavigationService'
-import InfoContent from 'App/Components/LaunchInfoScreenContent/InfoContent'
 import { pushNotifications } from 'App/Services/Index'
+import NavigationService from 'App/Services/NavigationService'
 import MainActions from 'App/Stores/Main/Actions'
+import Colors from 'App/Theme/Colors'
+import { Icon, Spinner, StyleProvider, Tab, Tabs, Text } from 'native-base'
+import React from 'react'
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { connect } from 'react-redux'
 
 class TestScreen extends React.Component {
   constructor(props) {
@@ -209,7 +209,7 @@ class TestScreen extends React.Component {
             <StyleProvider style={getTheme(material)}>
               <Tabs>
                 <Tab heading="Info">
-                  <InfoContent />
+                  <InfoContent launch={this.state.launch} />
                 </Tab>
                 <Tab heading="Links">
                   <View style={{ flex: 1, backgroundColor: Colors.success }} />
