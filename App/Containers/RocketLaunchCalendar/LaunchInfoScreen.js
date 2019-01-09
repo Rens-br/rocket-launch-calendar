@@ -1,4 +1,5 @@
 import InfoContent from 'App/Components/LaunchInfoScreenContent/InfoContent'
+import LinkContent from 'App/Components/LaunchInfoScreenContent/LinkContent'
 import getTheme from 'App/native-base-theme/components'
 import material from 'App/native-base-theme/variables/material'
 import { pushNotifications } from 'App/Services/Index'
@@ -55,7 +56,7 @@ class TestScreen extends React.Component {
 
   ExitScreen = () => {
     let date = this.state.date
-    NavigationService.navigateAndReset('CalendarScreen', { date })
+    NavigationService.navigateBack()
   }
 
   setDayNotification() {
@@ -212,7 +213,7 @@ class TestScreen extends React.Component {
                   <InfoContent launch={this.state.launch} />
                 </Tab>
                 <Tab heading="Links">
-                  <View style={{ flex: 1, backgroundColor: Colors.success }} />
+                  <LinkContent launch={this.state.launch} />
                 </Tab>
               </Tabs>
             </StyleProvider>
