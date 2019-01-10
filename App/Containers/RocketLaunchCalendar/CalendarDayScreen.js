@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
-import { PaperProvider, Card, Title, Paragraph, DefaultTheme } from 'react-native-paper'
+import { Card, Title, Paragraph } from 'react-native-paper'
 import { Text } from 'native-base'
 import Colors from '../../Theme/Colors'
 import NavigationService from 'App/Services/NavigationService'
@@ -21,14 +21,14 @@ export default class CalendarDayScreen extends React.Component {
               onPress={() => {
                 NavigationService.navigate('LaunchInfoScreen', { l: item })
               }}
-              style={{ borderRadius: 12, width: '95%', alignSelf: 'center', marginTop: 20 }}
+              style={styles.card}
             >
               <Card.Content>
-                <Title style={{ fontSize: 18, lineHeight: 24 }}>{item.launch.name}</Title>
-                <View style={{ flexDirection: 'row' }}>
-                  <Paragraph style={{ color: Colors.disabledText, flex: 1 }}>{lsp}</Paragraph>
-                  <Paragraph style={{ color: Colors.disabledText, textAlign: 'right', flex: 0.2 }}>
-                    {date.slice(0, 8)}
+                <Title style={styles.cardTitle}>{item.launch.name}</Title>
+                <View style={styles.cardContent}>
+                  <Paragraph style={styles.cardLsp}>{lsp}</Paragraph>
+                  <Paragraph style={styles.cardTime}>
+                    Time: {item.launch.netstamp === 0 ? 'Unknown' : date.slice(0, 8)}
                   </Paragraph>
                 </View>
               </Card.Content>
@@ -40,7 +40,6 @@ export default class CalendarDayScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props.navigation.state.params.item)
     let item = this.props.navigation.state.params.item
     return (
       <View style={styles.container}>
@@ -100,14 +99,26 @@ const styles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
   },
-})
-
-const theme = {
-  ...DefaultTheme,
-  roundness: 12,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#3498db',
-    accent: '#f1c40f',
+  card: {
+    borderRadius: 12,
+    width: '95%',
+    alignSelf: 'center',
+    marginTop: 20,
   },
-}
+  cardTitle: {
+    fontSize: 18,
+    lineHeight: 24,
+  },
+  cardContent: {
+    flexDirection: 'row',
+  },
+  cardLsp: {
+    color: Colors.disabledText,
+    flex: 1,
+  },
+  cardTime: {
+    color: Colors.disabledText,
+    textAlign: 'right',
+    flex: 0.5,
+  },
+})

@@ -1,16 +1,16 @@
-import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { PropTypes } from 'prop-types'
-import { Spinner, Icon } from 'native-base'
+import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
+import { DatePicker } from 'App/Components/RocketLaunchCalendar/DatePicker'
+import NavigationService from 'App/Services/NavigationService'
+import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
 import MainActions from 'App/Stores/Main/Actions'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import SpacexActions from 'App/Stores/SpaceX/Actions'
-import LaunchLibraryActions from 'App/Stores/LaunchLibrary/Actions'
-import Calendar from 'App/Components/RocketLaunchCalendar/Calendar'
 import Colors from 'App/Theme/Colors'
-import { DatePicker } from 'App/Components/RocketLaunchCalendar/DatePicker'
-import NavigationService from 'App/Services/NavigationService'
+import { Icon, Spinner } from 'native-base'
+import { PropTypes } from 'prop-types'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { connect } from 'react-redux'
 
 class CalendarScreen extends React.Component {
   constructor(props) {
@@ -206,7 +206,10 @@ class CalendarScreen extends React.Component {
   }
 
   onPressItem(item) {
-    NavigationService.navigate('LaunchInfoScreen', { item })
+    var l = item.launches[0]
+    item.launches.length === 1
+      ? NavigationService.navigate('LaunchInfoScreen', { l })
+      : NavigationService.navigate('CalendarDayScreen', { item })
   }
 
   CreateCalendar() {
@@ -298,7 +301,6 @@ class CalendarScreen extends React.Component {
               <Icon name="chevron-right" type="Feather" style={styles.weekBoxChevron} />
             </TouchableOpacity>
           </View>
-          <View style={styles.divider} />
         </View>
         {this.CreateCalendar()}
       </View>
@@ -362,13 +364,6 @@ const styles = StyleSheet.create({
     color: Colors.disabledText,
     textAlign: 'center',
     marginTop: -5,
-  },
-  divider: {
-    backgroundColor: Colors.disabledText,
-    flex: 0.02,
-    width: '80%',
-    alignSelf: 'center',
-    marginTop: 5,
   },
 })
 
