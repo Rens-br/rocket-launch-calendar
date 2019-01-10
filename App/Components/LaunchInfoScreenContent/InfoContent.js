@@ -8,12 +8,14 @@ import { Divider } from 'react-native-paper'
 export default class InfoContent extends Component {
   renderMission(missions) {
     if (missions !== undefined && missions !== null && missions.length !== 0) {
-      console.log(missions)
       return (
         <View style={styles.missionFilledContent}>
           <InfoText infoType={'Mission'} info={missions[0].name} subText={missions[0].typeName} />
           <Divider style={styles.divider} />
-          <InfoText infoType={'Agency'} info={missions[0].agencies[0].name} />
+          <InfoText
+            infoType={'Agency'}
+            info={missions[0].agencies === null ? 'Unknown' : missions[0].agencies[0].name}
+          />
           <Divider style={styles.divider} />
           <View style={styles.missionDescContent}>
             <Text style={styles.missionDescType}>Description</Text>
