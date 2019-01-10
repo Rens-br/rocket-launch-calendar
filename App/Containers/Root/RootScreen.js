@@ -14,6 +14,7 @@ import NewsScreen from 'App/Containers/RocketLaunchCalendar/NewsScreen'
 import CalendarScreen from 'App/Containers/RocketLaunchCalendar/CalendarScreen'
 import LaunchInfoScreen from 'App/Containers/RocketLaunchCalendar/LaunchInfoScreen'
 import SettingsScreen from 'App/Containers/RocketLaunchCalendar/SettingsScreen'
+import CalendarDayScreen from 'App/Containers/RocketLaunchCalendar/CalendarDayScreen'
 
 const AppNav = createStackNavigator(
   {
@@ -24,6 +25,7 @@ const AppNav = createStackNavigator(
     CalendarScreen: CalendarScreen,
     LaunchInfoScreen: LaunchInfoScreen,
     SettingsScreen: SettingsScreen,
+    CalendarDayScreen: CalendarDayScreen,
   },
   {
     initialRouteName: 'SplashScreen',
