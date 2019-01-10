@@ -11,7 +11,9 @@ export default class InfoContent extends Component {
       console.log(missions)
       return (
         <View style={styles.missionFilledContent}>
-          <InfoText infoType={'Mission'} info={missions[0].name} subText={'Earth science'} />
+          <InfoText infoType={'Mission'} info={missions[0].name} subText={missions[0].typeName} />
+          <Divider style={styles.divider} />
+          <InfoText infoType={'Agency'} info={missions[0].agencies[0].name} />
           <Divider style={styles.divider} />
           <View style={styles.missionDescContent}>
             <Text style={styles.missionDescType}>Description</Text>

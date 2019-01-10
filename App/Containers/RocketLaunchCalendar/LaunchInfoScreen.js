@@ -25,8 +25,8 @@ class TestScreen extends React.Component {
   }
 
   componentDidMount() {
-    let launch = this.props.navigation.state.params.item.launches[0].launch
-    let date = this.props.navigation.state.params.item.launches[0].date
+    let launch = this.props.navigation.state.params.l.launch
+    let date = this.props.navigation.state.params.l.date
     let canSubscribe = true
 
     let notifications = []
@@ -55,7 +55,6 @@ class TestScreen extends React.Component {
   }
 
   ExitScreen = () => {
-    let date = this.state.date
     NavigationService.navigateBack()
   }
 
@@ -105,7 +104,7 @@ class TestScreen extends React.Component {
           Alert.alert(
             'Error subscribing to launch',
             "This launch has already happened so you can't set a notification for it",
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{ text: 'OK' }],
             { cancelable: true }
           )
         }
@@ -129,15 +128,13 @@ class TestScreen extends React.Component {
                 })
               },
             },
-            { text: 'Cancel', onPress: () => console.log('OK Pressed') },
+            { text: 'Cancel' },
           ],
           { cancelable: true }
         )
       }
     }
   }
-
-  // new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000)
 
   setLaunchNotification = () => {
     let ids = []
@@ -163,9 +160,6 @@ class TestScreen extends React.Component {
         soundName: 'default',
         id: this.state.launch.id.toString() + (i + 1).toString(),
       })
-      console.log(
-        new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000)
-      )
       ids.push(this.state.launch.id.toString() + (i + 1).toString())
     }
     this.setState((previousState) => ({
@@ -182,13 +176,13 @@ class TestScreen extends React.Component {
   render() {
     if (this.state.launch !== null) {
       return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.flexOne}>
           <View style={styles.header}>
             <View style={styles.iconBar}>
               <TouchableOpacity onPress={this.ExitScreen} style={styles.iconBarIcon}>
                 <Icon name="arrow-left" type="Feather" style={styles.iconBarIcon} />
               </TouchableOpacity>
-              <View style={styles.iconBarText}>
+              <View style={styles.flexOne}>
                 <Text style={styles.launchNameText}>{this.state.launch.name}</Text>
                 <Text style={styles.launchDateText}>
                   {new Date(this.state.date).toString().substring(0, 24)}
@@ -206,7 +200,7 @@ class TestScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={styles.flexOne}>
             <StyleProvider style={getTheme(material)}>
               <Tabs>
                 <Tab heading="Info">
@@ -243,7 +237,7 @@ const styles = StyleSheet.create({
     marginRight: '5%',
     flex: 0.3,
   },
-  iconBarText: {
+  flexOne: {
     flex: 1,
   },
   iconBarIcon: {
