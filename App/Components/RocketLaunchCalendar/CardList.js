@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, StyleSheet } from 'react-native'
 import { Card, Paragraph, Title, DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import NavigationService from '../../Services/NavigationService'
 import Colors from '../../Theme/Colors'
 
 export default class CardList extends Component {
-  state = {
-    isRefreshing: false,
-    cards: this.props.cardData,
+  constructor(props) {
+    super(props)
+    this.state = {
+      isRefreshing: false,
+      cards: null,
+    }
   }
 
   setCards = () => {
-    this.state.cards = this.props.cardData
-
-    console.log(this.state.cards)
+    if (this.state.cards !== this.props.cardData) {
+      this.setState({ cards: this.props.cardData })
+    }
   }
 
   render() {
@@ -24,6 +27,9 @@ export default class CardList extends Component {
         <FlatList
           data={this.state.cards}
           keyExtractor={(item) => item.data._id}
+          ref={(ref) => {
+            this.flatListRef = ref
+          }}
           renderItem={({ item }) => {
             return (
               <PaperProvider theme={theme}>
@@ -35,13 +41,11 @@ export default class CardList extends Component {
                       source: item.data.news_site_long,
                     })
                   }}
-                  style={{ borderRadius: 12, width: '90%', alignSelf: 'center', marginTop: 20 }}
+                  style={styles.card}
                 >
                   <Card.Cover source={{ uri: item.data.featured_image }} />
                   <Card.Content>
-                    <Title style={{ fontSize: 22, lineHeight: 24, marginTop: 10 }}>
-                      {item.data.title}
-                    </Title>
+                    <Title style={styles.cardTitle}>{item.data.title}</Title>
                     <Paragraph style={{ color: Colors.disabledText }}>
                       {item.data.news_site_long}
                     </Paragraph>
@@ -59,6 +63,20 @@ export default class CardList extends Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 12,
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  cardTitle: {
+    fontSize: 22,
+    lineHeight: 24,
+    marginTop: 10,
+  },
+})
 
 const theme = {
   ...DefaultTheme,

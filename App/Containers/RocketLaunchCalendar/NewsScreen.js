@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 import SpaceFlightNewsActions from 'App/Stores/SpaceFlightNews/Actions'
 import CardList from 'App/Components/RocketLaunchCalendar/CardList'
 import Colors from 'App/Theme/Colors'
+import { Spinner } from 'native-base'
 
 class NewsScreen extends React.Component {
   constructor(props) {
@@ -33,9 +34,12 @@ class NewsScreen extends React.Component {
   }
 
   createCardList = () => {
-    if (this.props.articles === undefined || this.props.articles === null) return
-    let t = this
-    if (this.props.articles.Page !== 1) {
+    if (
+      this.props.articles === undefined ||
+      this.props.articles === null ||
+      this.props.articles.Page !== 1
+    ) {
+      let t = this
       setTimeout(function() {
         t.createCardList()
       }, 1000)
@@ -50,6 +54,7 @@ class NewsScreen extends React.Component {
       })
     }
     this.setState((previousState) => ({ cards: c }))
+    this.render()
   }
 
   addCards = (page) => {
@@ -70,23 +75,43 @@ class NewsScreen extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.newsScreen}>
-        <CardList
-          cardData={this.state.cards}
-          refresh={this.getNews}
-          refreshing={this.props.loading === undefined ? false : this.props.loading}
-          onEndReachedThreshold={1}
-          endReached={this.addNews}
-        />
-      </View>
-    )
+    if (
+      this.state.cards !== null &&
+      this.state.cards !== undefined &&
+      this.state.cards.length !== 0
+    ) {
+      return (
+        <View style={styles.newsScreen}>
+          <CardList
+            cardData={this.state.cards}
+            refresh={this.getNews}
+            refreshing={this.props.loading === undefined ? false : this.props.loading}
+            ref={(ref) => {
+              this.flatListRef = ref
+            }}
+            onEndReachedThreshold={1}
+            endReached={this.addNews}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.loadingSpinner}>
+          <Spinner color={Colors.launchDay} />
+        </View>
+      )
+    }
   }
 }
 
 const styles = StyleSheet.create({
   newsScreen: {
     flex: 1,
+    backgroundColor: Colors.contentBackground,
+  },
+  loadingSpinner: {
+    flex: 1,
+    justifyContent: 'center',
     backgroundColor: Colors.contentBackground,
   },
 })
