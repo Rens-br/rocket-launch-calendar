@@ -24,7 +24,6 @@ class CalendarScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigation.state.params)
     if (this.props.navigation.state.params !== undefined) {
       let date = new Date(this.props.navigation.state.params.date)
       this.GetCurrentMonday(date)
@@ -57,7 +56,6 @@ class CalendarScreen extends React.Component {
     }))
 
     this.GetWeekNumber(nDate)
-    console.log(this.props.savedLaunches)
     if (this.props.savedLibraryLaunches === undefined) {
       this.GetMonthLaunches(nDate)
     } else {
@@ -159,9 +157,7 @@ class CalendarScreen extends React.Component {
         useSavedDates = true
       }
     }
-    console.log(this.props.sa)
     if (this.props.savedLibraryLaunches === undefined) {
-      console.log('saving')
       this.props.saveLibraryLaunches()
       return null
     }

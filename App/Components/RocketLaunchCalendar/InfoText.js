@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Colors from '../../Theme/Colors'
+
 export default class InfoText extends Component {
   renderSubText() {
-    if (this.props.subText) return <Text style={styles.subText}>{this.props.subText}</Text>
+    if (this.props.subText) {
+      let sub = this.props.subText
+      sub = sub.slice(0, 50)
+      sub += sub.length >= 50 ? '...' : ''
+      return <Text style={styles.subText}>{sub}</Text>
+    }
   }
 
   render() {

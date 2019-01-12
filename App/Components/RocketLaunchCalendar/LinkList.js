@@ -30,6 +30,32 @@ function extractWebsiteName(url) {
 }
 
 export default class LinkList extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      list: [],
+    }
+  }
+
+  componentDidMount() {
+    let nList = []
+    if (this.props.links !== undefined && this.props.links !== null) {
+      nList = this.props.links.slice()
+    }
+    if (this.props.extraLinks !== undefined && this.props.extraLinks !== null) {
+      for (let i = 0; i < this.props.extraLinks.length; i++) {
+        let link = this.props.extraLinks[i]
+        if (link !== undefined && link !== null && nList.indexOf(link) === -1) nList.push(link)
+      }
+    }
+
+    for (let j = 0; j < nList.length; j++) {
+      let link = nList[j]
+      if (link === '') nList.splice(nList.indexOf(link), 1)
+    }
+    this.setState({ list: nList })
+  }
+
   getIcon(name) {
     if (icons.get(name)) {
       return icons.get(name)
@@ -39,9 +65,9 @@ export default class LinkList extends Component {
   }
 
   renderLinks(list) {
-    return list.map((buttonInfo) => (
+    return list.map((buttonInfo, key) => (
       <TouchableRipple
-        key={buttonInfo.length}
+        key={key}
         onPress={this.props.onPressLink.bind(this, {
           link: buttonInfo,
           pageName: extractHostdomain(buttonInfo),
@@ -61,14 +87,18 @@ export default class LinkList extends Component {
   }
 
   render() {
-    return (
-      <View style={(styles.container, { flex: 1, marginLeft: 10 })}>
-        <View style={styles.content}>
-          <Text style={styles.infoType}>{this.props.title}</Text>
-          {this.renderLinks(this.props.links)}
+    if (this.state.list !== undefined && this.state.list.length !== 0) {
+      return (
+        <View
+          style={(styles.container, { height: 30 + 41 * this.state.list.length, width: '90%' })}
+        >
+          <View style={styles.content}>
+            <Text style={styles.infoType}>{this.props.title}</Text>
+            {this.renderLinks(this.state.list)}
+          </View>
         </View>
-      </View>
-    )
+      )
+    } else return null
   }
 }
 
@@ -85,13 +115,13 @@ const icons = new Map([
 const styles = StyleSheet.create({
   container: {
     margin: 2,
-    flex: 1,
     marginRight: 10,
     marginLeft: 10,
     justifyContent: 'center',
   },
   content: {
     flex: 1,
+    marginLeft: '5%',
   },
   linkContent: {
     flexDirection: 'row',
