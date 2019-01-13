@@ -5,8 +5,10 @@ import { Divider } from 'react-native-paper'
 import SettingsToggle from 'App/Components/RocketLaunchCalendar/SettingsToggle'
 import SettingsSelection from 'App/Components/RocketLaunchCalendar/SettingsSelection'
 import Colors from '../../Theme/Colors'
+import SettingsActions from '../../Stores/Settings/Actions'
+import { connect } from 'react-redux'
 
-export default class SettingsScreen extends React.Component {
+class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -20,9 +22,9 @@ export default class SettingsScreen extends React.Component {
           <SettingsToggle
             text={'Notification Sound'}
             onToggle={(t) => {
-              console.log(t)
+              this.props.toggleSound()
             }}
-            initialState={false}
+            initialState={this.props.notificationSound}
           />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
           <SettingsToggle
@@ -75,3 +77,21 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 })
+
+const mapStateToProps = (state) => ({
+  notificationIntervals: state.settings.notificationIntervals,
+  notificationSound: state.settings.notificationSound,
+  notificationVibration: state.settings.notificationVibration,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setNotificationIntervals: (intervals) =>
+    dispatch(SettingsActions.setNotificationIntervals(intervals)),
+  toggleVibration: () => dispatch(SettingsActions.toggleVibration()),
+  toggleSound: () => dispatch(SettingsActions.toggleSound()),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsScreen)
