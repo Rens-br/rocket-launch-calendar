@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Text } from 'native-base'
 import { Divider } from 'react-native-paper'
 import SettingsToggle from 'App/Components/RocketLaunchCalendar/SettingsToggle'
@@ -21,21 +21,23 @@ class SettingsScreen extends React.Component {
           </Text>
           <SettingsToggle
             text={'Notification Sound'}
-            onToggle={(t) => {
-              this.props.toggleSound()
-            }}
+            onToggle={this.props.toggleSound}
             initialState={this.props.notificationSound}
           />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
           <SettingsToggle
             text={'Notification Vibration'}
-            onToggle={(t) => {
-              console.log(t)
-            }}
-            initialState={true}
+            onToggle={this.props.toggleVibration}
+            initialState={this.props.notificationVibration}
           />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
-          <SettingsSelection numeric text={'Notification Interval'} options={['10']} />
+          <SettingsSelection
+            numeric
+            text={'Notification Interval'}
+            options={this.props.notificationIntervals}
+            onChangeValue={(a) => this.props.setNotificationIntervals(a)}
+            suffix={'Minutes'}
+          />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
           <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>
             News

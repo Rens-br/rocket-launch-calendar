@@ -36,6 +36,10 @@ class TestScreen extends React.Component {
       canSubscribe = false
     }
 
+    if (this.props.notificationIntervals !== null || this.props.notificationIntervals.length) {
+      this.setState({ notificationTimes: this.props.notificationIntervals })
+    }
+
     if (this.props.notifications !== undefined) {
       for (var i = 0; i < this.props.notifications.length; i++) {
         if (this.props.notifications[i].launchId === launch.id) {
@@ -45,13 +49,13 @@ class TestScreen extends React.Component {
       }
     }
 
-    this.setState((previousState) => ({
+    this.setState({
       launch: launch,
       date: date,
       notificationIds: notifications,
       isSubscribed: subscribed,
       canSubscribe: canSubscribe,
-    }))
+    })
   }
 
   ExitScreen = () => {
@@ -71,11 +75,11 @@ class TestScreen extends React.Component {
         this.state.launch.rocket.name +
         ' will be launched today! Check the app for more information',
       color: Colors.launchDay,
-      vibrate: true,
+      vibrate: this.props.notificationVibration,
       vibration: 300,
       title: this.state.launch.name + ' launch is today!',
       message: 'Check the app for the exact time',
-      playSound: true,
+      playSound: this.props.notificationSound,
       soundName: 'default',
       id: this.state.launch.id.toString() + (0).toString(),
     })
@@ -139,7 +143,7 @@ class TestScreen extends React.Component {
   setLaunchNotification = () => {
     let ids = []
 
-    for (var i = 0; i < this.state.notificationTimes.length; i++) {
+    for (let i = 0; i < this.state.notificationTimes.length; i++) {
       pushNotifications.scheduledNotification({
         date: new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000),
         autoCancel: true,
@@ -152,11 +156,11 @@ class TestScreen extends React.Component {
           this.state.notificationTimes[i] +
           ' minutes!',
         color: Colors.launchDay,
-        vibrate: true,
+        vibrate: this.props.notificationVibration,
         vibration: 300,
         title: this.state.launch.name + ' -  T-' + this.state.notificationTimes[i] + ' minutes',
         message: 'Rocket will be launched in ' + this.state.notificationTimes[i] + ' minutes!',
-        playSound: true,
+        playSound: this.props.notificationSound,
         soundName: 'default',
         id: this.state.launch.id.toString() + (i + 1).toString(),
       })
@@ -267,6 +271,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   notifications: state.main.notifications,
+  notificationIntervals: state.settings.notificationIntervals,
+  notificationVibration: state.settings.notificationVibration,
+  notificationSound: state.settings.notificationSound,
 })
 
 const mapDispatchToProps = (dispatch) => ({

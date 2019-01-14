@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Modal, FlatList } from 'react-native'
+import { FlatList, Modal, StyleSheet, Text, View } from 'react-native'
 import Colors from '../../Theme/Colors'
 import { TouchableRipple } from 'react-native-paper'
-import { Item, Input, Icon } from 'native-base'
+import { Icon, Input, Item } from 'native-base'
+
 export default class SettingsToggle extends Component {
   constructor(props) {
     super(props)
@@ -16,8 +17,9 @@ export default class SettingsToggle extends Component {
   }
 
   componentDidMount() {
+    let o = this.props.options !== undefined ? this.props.options : []
     this.setState(() => ({
-      options: this.props.options,
+      options: o,
       numeric: this.props.numeric,
       canBeEmpty: this.props.canBeEmpty,
     }))
@@ -31,6 +33,7 @@ export default class SettingsToggle extends Component {
 
   AddValue = () => {
     let value = this.state.text
+    if (value === '' || value === undefined || value === null) return
     if (this.state.numeric) {
       value = parseInt(value)
     }
@@ -43,6 +46,8 @@ export default class SettingsToggle extends Component {
       options: o,
       text: '',
     }))
+
+    this.props.onChangeValue(o)
   }
 
   RemoveValue = (value) => {
@@ -96,7 +101,9 @@ export default class SettingsToggle extends Component {
                 renderItem={({ item }) => {
                   return (
                     <Item style={{ color: Colors.launchDay }}>
-                      <Text style={styles.listText}>{item.toString()}</Text>
+                      <Text style={styles.listText}>
+                        {item.toString() + ' ' + this.props.suffix}
+                      </Text>
                       <TouchableRipple
                         onPress={() => this.RemoveValue(item)}
                         rippleColor={Colors.launchDay}
