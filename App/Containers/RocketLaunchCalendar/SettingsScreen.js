@@ -16,21 +16,19 @@ class SettingsScreen extends React.Component {
           <Text style={styles.title}>Settings</Text>
         </View>
         <View style={styles.content}>
-          <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>
-            Notifications
-          </Text>
+          <Text style={styles.categoryTitle}>Notifications</Text>
           <SettingsToggle
             text={'Notification Sound'}
             onToggle={this.props.toggleSound}
             initialState={this.props.notificationSound}
           />
-          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
+          <Divider style={styles.divider} />
           <SettingsToggle
             text={'Notification Vibration'}
             onToggle={this.props.toggleVibration}
             initialState={this.props.notificationVibration}
           />
-          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
+          <Divider style={styles.divider} />
           <SettingsSelection
             numeric
             text={'Notification Interval'}
@@ -38,10 +36,8 @@ class SettingsScreen extends React.Component {
             onChangeValue={(a) => this.props.setNotificationIntervals(a)}
             suffix={'Minutes'}
           />
-          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
-          <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>
-            News
-          </Text>
+          <Divider style={styles.divider} />
+          <Text style={styles.categoryTitle}>News</Text>
           <SettingsSelection
             canBeEmpty
             text={'Blocked tags'}
@@ -49,15 +45,15 @@ class SettingsScreen extends React.Component {
             defaultState={'None'}
             onChangeValue={(a) => this.props.setNewsTags(a)}
           />
-          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
+          <Divider style={styles.divider} />
           <SettingsSelection
             canBeEmpty
-            text={'Shown news sources'}
+            text={'Blocked news sources'}
             options={this.props.newsSources}
-            defaultState={'All'}
+            defaultState={'None'}
             onChangeValue={(a) => this.props.setNewsSources(a)}
           />
-          <Divider style={{ height: 2, backgroundColor: Colors.background }} />
+          <Divider style={styles.divider} />
         </View>
       </View>
     )
@@ -84,6 +80,16 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     alignSelf: 'center',
+  },
+  divider: {
+    height: 2,
+    backgroundColor: Colors.background,
+  },
+  categoryTitle: {
+    color: Colors.launchDay,
+    marginBottom: 4,
+    marginLeft: 10,
+    marginTop: 8,
   },
 })
 

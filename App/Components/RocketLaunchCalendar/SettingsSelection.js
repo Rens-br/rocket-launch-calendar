@@ -126,6 +126,11 @@ export default class SettingsToggle extends Component {
     if (this.state.isOpen) {
       return this.showModal()
     } else {
+      let optionString =
+        this.state.options.toString().length > 40
+          ? this.state.options.toString().slice(0, 40) + '...'
+          : this.state.options.toString()
+
       return (
         <View style={styles.container}>
           <TouchableRipple
@@ -136,9 +141,7 @@ export default class SettingsToggle extends Component {
             <View style={styles.content}>
               <Text style={styles.title}>{this.props.text}</Text>
               <Text style={styles.options}>
-                {this.state.options.length === 0
-                  ? this.props.defaultState
-                  : this.state.options.toString()}
+                {this.state.options.length === 0 ? this.props.defaultState : optionString}
               </Text>
             </View>
           </TouchableRipple>
