@@ -23,13 +23,13 @@ class NewsScreen extends React.Component {
 
   getNews = () => {
     this.setState((previousState) => ({ currentPage: 1 }))
-    this.props.fetchNews(this.state.currentPage)
+    this.props.fetchNews(this.state.currentPage, this.props.newsTags)
     this.createCardList()
   }
 
   addNews = () => {
     this.setState((previousState) => ({ currentPage: previousState.currentPage + 1 }))
-    this.props.fetchNews(this.state.currentPage + 1)
+    this.props.fetchNews(this.state.currentPage + 1, this.props.newsTags)
     this.addCards(this.state.currentPage + 1)
   }
 
@@ -124,10 +124,11 @@ const mapStateToProps = (state) => ({
   currentDate: state.main.currentDate,
   articles: state.spaceFlightNews.articles,
   loading: state.spaceFlightNews.loading,
+  newsTags: state.settings.newsTags,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchNews: (page) => dispatch(SpaceFlightNewsActions.fetchNews(page)),
+  fetchNews: (page, blockList) => dispatch(SpaceFlightNewsActions.fetchNews(page, blockList)),
 })
 
 export default connect(

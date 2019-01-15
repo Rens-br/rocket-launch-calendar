@@ -26,8 +26,30 @@ export const toggleSound = (state) => {
   }
 }
 
+export const setNewsTags = (state, { tags }) => {
+  return {
+    notificationIntervals: state.notificationIntervals,
+    notificationSound: state.notificationSound,
+    notificationVibration: state.notificationVibration,
+    newsTags: tags,
+    newsSources: state.newsSources,
+  }
+}
+
+export const setNewsSources = (state, { sources }) => {
+  return {
+    notificationIntervals: state.notificationIntervals,
+    notificationSound: state.notificationSound,
+    notificationVibration: state.notificationVibration,
+    newsTags: state.newsTags,
+    newsSources: sources,
+  }
+}
+
 export const reducer = createReducer(INITIAL_STATE, {
   [SettingsTypes.SET_NOTIFICATION_INTERVALS]: setNotificationIntervals,
   [SettingsTypes.TOGGLE_VIBRATION]: toggleVibration,
   [SettingsTypes.TOGGLE_SOUND]: toggleSound,
+  [SettingsTypes.SET_NEWS_TAGS]: setNewsTags,
+  [SettingsTypes.SET_NEWS_SOURCES]: setNewsSources,
 })

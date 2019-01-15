@@ -42,13 +42,20 @@ class SettingsScreen extends React.Component {
           <Text style={{ color: Colors.launchDay, marginBottom: 4, marginLeft: 10, marginTop: 8 }}>
             News
           </Text>
-          <SettingsSelection canBeEmpty text={'Shown tags'} options={[]} defaultState={'All'} />
+          <SettingsSelection
+            canBeEmpty
+            text={'Blocked tags'}
+            options={this.props.newsTags}
+            defaultState={'None'}
+            onChangeValue={(a) => this.props.setNewsTags(a)}
+          />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
           <SettingsSelection
             canBeEmpty
             text={'Shown news sources'}
-            options={[]}
+            options={this.props.newsSources}
             defaultState={'All'}
+            onChangeValue={(a) => this.props.setNewsSources(a)}
           />
           <Divider style={{ height: 2, backgroundColor: Colors.background }} />
         </View>
@@ -84,6 +91,8 @@ const mapStateToProps = (state) => ({
   notificationIntervals: state.settings.notificationIntervals,
   notificationSound: state.settings.notificationSound,
   notificationVibration: state.settings.notificationVibration,
+  newsTags: state.settings.newsTags,
+  newsSources: state.settings.newsSources,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -91,6 +100,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(SettingsActions.setNotificationIntervals(intervals)),
   toggleVibration: () => dispatch(SettingsActions.toggleVibration()),
   toggleSound: () => dispatch(SettingsActions.toggleSound()),
+  setNewsTags: (tags) => dispatch(SettingsActions.setNewsTags(tags)),
+  setNewsSources: (sources) => dispatch(SettingsActions.setNewsSources(sources)),
 })
 
 export default connect(

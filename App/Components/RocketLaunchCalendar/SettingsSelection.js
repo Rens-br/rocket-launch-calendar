@@ -102,7 +102,8 @@ export default class SettingsToggle extends Component {
                   return (
                     <Item style={{ color: Colors.launchDay }}>
                       <Text style={styles.listText}>
-                        {item.toString() + ' ' + this.props.suffix}
+                        {item.toString()}{' '}
+                        {this.props.suffix !== undefined ? this.props.suffix : ' '}
                       </Text>
                       <TouchableRipple
                         onPress={() => this.RemoveValue(item)}
