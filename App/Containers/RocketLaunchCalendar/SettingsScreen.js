@@ -9,6 +9,12 @@ import SettingsActions from '../../Stores/Settings/Actions'
 import { connect } from 'react-redux'
 
 class SettingsScreen extends React.Component {
+  componentDidMount() {
+    if (this.props.notificationIntervals === undefined) {
+      this.props.setNotificationIntervals([5, 15, 30])
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
