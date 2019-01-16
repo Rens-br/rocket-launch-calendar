@@ -14,7 +14,7 @@ export default class InfoText extends Component {
 
   render() {
     return (
-      <View style={(styles.container, { flex: 0.2, marginLeft: 10 })}>
+      <View style={(styles.container, { flex: 0.2, marginLeft: 16 })}>
         <View style={styles.content}>
           <Text style={styles.infoType}>{this.props.infoType}</Text>
           <Text style={styles.info}>{this.props.info}</Text>

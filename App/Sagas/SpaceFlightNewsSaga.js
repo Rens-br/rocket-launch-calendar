@@ -4,7 +4,6 @@ import { SpaceFlightNewsService } from 'App/Services/SpaceFlightNewsService'
 
 export function* fetchNews(params) {
   yield put(SpaceFlightNewsActions.fetchNewsLoading())
-  console.log(params.Page)
   const News = yield call(SpaceFlightNewsService.fetchNews, params.Page)
 
   if (News) {

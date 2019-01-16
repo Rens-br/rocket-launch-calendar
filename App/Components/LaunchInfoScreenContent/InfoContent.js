@@ -2,7 +2,7 @@ import InfoText from 'App/Components/RocketLaunchCalendar/InfoText'
 import Colors from 'App/Theme/Colors'
 import { Text, View } from 'native-base'
 import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { Divider } from 'react-native-paper'
 
 export default class InfoContent extends Component {
@@ -35,7 +35,8 @@ export default class InfoContent extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.content}>
+        <ScrollView style={styles.content}>
+          <View style={styles.topBorder} />
           <InfoText infoType={'Launch Service Provider'} info={this.props.launch.lsp.name} />
           <Divider style={styles.divider} />
           <InfoText
@@ -57,7 +58,7 @@ export default class InfoContent extends Component {
           />
           <Divider style={styles.divider} />
           {this.renderMission(this.props.launch.missions)}
-        </View>
+        </ScrollView>
       </View>
     )
   }
@@ -69,16 +70,21 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.contentBackground,
   },
   content: {
-    marginTop: 12,
+    marginTop: 0,
     flex: 1,
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
+  },
+  topBorder: {
+    height: 16,
   },
   divider: {
     height: 2,
     backgroundColor: Colors.background,
     marginTop: 20,
     marginBottom: 4,
+    marginLeft: '5%',
+    marginRight: '5%',
   },
   missionFilledContent: {
     flex: 1.9,
@@ -90,6 +96,8 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     marginTop: 4,
+    marginLeft: 16,
+    marginRight: 16,
   },
   missionDescType: {
     color: Colors.disabledText,
