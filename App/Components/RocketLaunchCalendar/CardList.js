@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import { Card, Paragraph, Title, DefaultTheme, Provider as PaperProvider } from 'react-native-paper'
 import NavigationService from '../../Services/NavigationService'
 import Colors from '../../Theme/Colors'
+import { Spinner } from 'native-base'
 
 export default class CardList extends Component {
   constructor(props) {
@@ -13,6 +14,10 @@ export default class CardList extends Component {
     }
   }
 
+  UpdateList() {
+    this.forceUpdate()
+  }
+
   setCards = () => {
     if (this.state.cards !== this.props.cardData) {
       this.setState({ cards: this.props.cardData })
@@ -20,6 +25,7 @@ export default class CardList extends Component {
   }
 
   render() {
+    this.props.ref = this
     this.setCards()
     if (this.state.cards == null || this.state.cards === undefined) return null
     else {
@@ -29,6 +35,13 @@ export default class CardList extends Component {
           keyExtractor={(item) => item.data._id}
           ref={(ref) => {
             this.flatListRef = ref
+          }}
+          ListFooterComponent={() => {
+            return (
+              <View style={styles.loadingSpinner}>
+                <Spinner color={Colors.launchDay} />
+              </View>
+            )
           }}
           renderItem={({ item }) => {
             return (
@@ -75,6 +88,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 24,
     marginTop: 10,
+  },
+  loadingSpinner: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: Colors.contentBackground,
   },
 })
 

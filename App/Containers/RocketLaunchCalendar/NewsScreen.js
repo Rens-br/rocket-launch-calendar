@@ -72,6 +72,8 @@ class NewsScreen extends React.Component {
         data: this.props.articles.News[i],
       })
     }
+
+    this.flatListRef.UpdateList()
   }
 
   render() {
