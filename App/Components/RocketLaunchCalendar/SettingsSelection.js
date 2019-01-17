@@ -84,20 +84,22 @@ export default class SettingsToggle extends Component {
                 <Input
                   keyboardType={this.state.numeric ? 'numeric' : 'default'}
                   style={{ color: Colors.text }}
-                  placeholder="Add interval"
+                  placeholder={this.props.textPlaceholder}
                   value={this.state.text}
+                  onSubmitEditing={this.AddValue}
                   onChangeText={(text) =>
                     this.setState(() => ({
                       text: text,
                     }))
                   }
                 />
-                <TouchableRipple onPress={this.AddValue} rippleColor={Colors.launchDay}>
-                  <Icon style={{ color: Colors.text }} active name="plus" type="Feather" />
-                </TouchableRipple>
+                <Icon style={{ color: Colors.disabledText }} active name="plus" type="Feather" />
               </Item>
               <FlatList
                 data={this.state.options}
+                ListEmptyComponent={() => {
+                  return <View />
+                }}
                 renderItem={({ item }) => {
                   return (
                     <Item style={{ color: Colors.launchDay }}>

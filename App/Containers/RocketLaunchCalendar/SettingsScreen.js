@@ -12,6 +12,7 @@ class SettingsScreen extends React.Component {
   componentDidMount() {
     if (this.props.notificationIntervals === undefined) {
       this.props.setNotificationIntervals([5, 15, 30])
+      this.forceUpdate()
     }
   }
 
@@ -41,6 +42,7 @@ class SettingsScreen extends React.Component {
             options={this.props.notificationIntervals}
             onChangeValue={(a) => this.props.setNotificationIntervals(a)}
             suffix={'Minutes'}
+            textPlaceholder={'Add interval'}
           />
           <Divider style={styles.divider} />
           <Text style={styles.categoryTitle}>News</Text>
@@ -50,6 +52,7 @@ class SettingsScreen extends React.Component {
             options={this.props.newsTags}
             defaultState={'None'}
             onChangeValue={(a) => this.props.setNewsTags(a)}
+            textPlaceholder={'Add tag'}
           />
           <Divider style={styles.divider} />
           <SettingsSelection
@@ -58,6 +61,7 @@ class SettingsScreen extends React.Component {
             options={this.props.newsSources}
             defaultState={'None'}
             onChangeValue={(a) => this.props.setNewsSources(a)}
+            textPlaceholder={'Add news source'}
           />
           <Divider style={styles.divider} />
         </View>
