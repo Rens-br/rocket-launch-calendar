@@ -12,7 +12,7 @@ const SpaceFlightNewsApiClient = create({
 
 function fetchNews(Page) {
   console.log(Page)
-  const url = '/articles?limit=10&page=' + Page.toString()
+  const url = '/articles?limit=25&page=' + Page.toString()
   return SpaceFlightNewsApiClient.get(url.toString()).then((response) => {
     if (response.ok) {
       console.log(response.data)

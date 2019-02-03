@@ -21,6 +21,7 @@ const configure = () => {
   })
 }
 const scheduledNotification = (data) => {
+  console.log(data)
   PushNotification.localNotificationSchedule(data)
 }
 

@@ -139,13 +139,13 @@ class TestScreen extends React.Component {
       }
     }
   }
-
+  //this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000
   setLaunchNotification = () => {
     let ids = []
 
     for (let i = 0; i < this.state.notificationTimes.length; i++) {
       pushNotifications.scheduledNotification({
-        date: new Date(this.state.launch.netstamp * 1000 - this.state.notificationTimes[i] * 60000),
+        date: new Date(Date.now() + this.state.notificationTimes[i] * 600),
         autoCancel: true,
         smallIcon: 'ic_notification',
         largeIcon: '',
